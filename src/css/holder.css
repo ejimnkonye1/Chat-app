@@ -1,0 +1,54 @@
+.chat-section {
+    background-color: #0d0d0d;
+  }
+  
+  #chat3 {
+    border-radius: 15px;
+  }
+  
+  .user-list {
+    position: relative;
+    height: 400px;
+    overflow-y: auto;
+  }
+  
+  .user-list img {
+    width: 60px;
+  }
+  
+  .chat-messages {
+    position: relative;
+    height: 400px;
+    overflow-y: auto;
+  }
+  
+  .message-avatar {
+    width: 45px;
+    height: 100%;
+  }
+  
+  .message-input {
+    display: flex;
+    align-items: center;
+    padding-top: 1rem;
+    padding-right: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .input-avatar {
+    width: 40px;
+    height: 100%;
+    border-radius: 50%;
+  }
+  
+  .message-input input {
+    flex-grow: 1;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  /* on it */
+  .billie-link{
+    text-decoration: none;
+  }
+ 
+  

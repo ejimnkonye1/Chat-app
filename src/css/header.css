@@ -1,0 +1,16 @@
+.center-items{
+    position: relative;
+    left: 40%;
+  }
+  .right-but{
+    position: relative;
+    left: 80%;
+  }
+  .friend-pic{
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+  .message-avatar{
+    border-radius: 50%;
+  }
