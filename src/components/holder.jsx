@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import chatUsers from './chatUser';
 import chatMessages from './chatMes';
 import { FiPaperclip } from "react-icons/fi";
@@ -10,18 +10,24 @@ import img from '../assets/IMG_2278.jpg'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setChat } from '../action';
-const Holder = ({}) => {
+import { setImg } from '../action';
+const Holder = () => {
     const dispatch = useDispatch()
-    const chatspic = useSelector((state) => state.chat)
+    const chatspic = useSelector((state) => state.image)
+    const chatstext = useSelector((state) => state.chat)
     const darkmode = useSelector((state)=> state.darkMode)
     const style = {
         backgroundColor : darkmode ? '#000' : "#fff",
         color: darkmode ? '#FFF' : '#000',
         transition: 'all 0.3s',
     }
-const Chat = (user) => {
-    dispatch(setChat(user))
+const handleChat = (message,imgSrc) => {
+    dispatch(setChat(message))
+    dispatch(setImg(imgSrc))
 }
+// useEffect(() => {
+//  dispatch(setChat(user.message))
+// },[user])
   return (
     <section className="chat-section" style={style}>
       <div className="container py-5">
@@ -46,34 +52,38 @@ const Chat = (user) => {
 
                         </span>
                       </div>
-                      <div className="user-list">
+                      <div className="user-list" >
                         <ul className="list-unstyled mb-0" >
                           {chatUsers.map((user, index) => (
-                            <li className="p-2 border-bottom" key={index}>
-                              <a href="#!" className="d-flex justify-content-between billie-link">
-                                <div className="d-flex flex-row">
-                                  <div onClick={() => Chat(user.imgSrc)}>
-                                    <img
-                                      src={user.imgSrc}
-                                      alt="pic"
-                                      className="d-flex align-self-center me-3 friend-pic"
-                                      width="60"
-                                    />
-                                    <span className={`badge ${user.badgeClass} badge-dot`}></span>
-                                  </div>
-                                  <div className="pt-1">
-                                    <p className="fw-bold mb-0">{user.name}</p>
-                                    <p className="small text-muted">{user.message}</p>
-                                  </div>
+                            
+                           user && (
+                            <li className="p-2 border-bottom" key={index} onClick={() => handleChat(user.message,user.imgSrc)}>
+                            <a href="#!" className="d-flex justify-content-between billie-link">
+                              <div className="d-flex flex-row">
+                                <div >
+                                  
+                                  <img
+                                    src={user.imgSrc}
+                                    alt="pic"
+                                    className="d-flex align-self-center me-3 friend-pic"
+                                    width="60"
+                                  />
+                                  <span className={`badge ${user.badgeClass} badge-dot`}></span>
                                 </div>
                                 <div className="pt-1">
-                                  <p className="small text-muted mb-1">{user.time}</p>
-                                  {user.unreadCount && (
-                                    <span className="badge bg-danger rounded-pill float-end">{user.unreadCount}</span>
-                                  )}
+                                  <p className="fw-bold mb-0">{user.name}</p>
+                                  <p className="small text-muted" >{user.message}</p>
                                 </div>
-                              </a>
-                            </li>
+                              </div>
+                              <div className="pt-1">
+                                <p className="small text-muted mb-1">{user.time}</p>
+                                {user.unreadCount && (
+                                  <span className="badge bg-danger rounded-pill float-end">{user.unreadCount}</span>
+                                )}
+                              </div>
+                            </a>
+                          </li>
+                           )
                           ))}
                         </ul>
                       </div>
@@ -94,25 +104,35 @@ const Chat = (user) => {
                             alt="avatar 1"
                             className="message-avatar"
                           /> */}
-
-            <img
+               {chatspic && (
+                <img
                 src={msg.align === 'end' ? msg.imgSrc : chatspic}
                 alt="avatar 1"
                 className="message-avatar"
             />
+               )}
+            
             
           
                           <div>
-                            <p
+                          
+                         <p
                               className={`small p-2 ms-3 mb-1 rounded-3 ${
-                                msg.align === 'end' ? 'text-white bg-primary' : 'bg-body-tertiary'
-                              }`}
-                            >
-                              {msg.text}
+                                msg.align === 'end' ? 'text-white bg-primary' :chatstext ? 'bg-body-tertiary' : ''
+                              }`}>
+                              
+                              {msg.align === 'end' ? msg.text : chatstext}
                             </p>
+                            
                             <p className="small ms-3 mb-3 rounded-3 text-muted float-end">
-                              {msg.time}
+                          
+                              {chatstext &&(
+                                    <div>    {msg.time}</div>
+                              )}
                             </p>
+                      
+                          
+                           
                           </div>
                         </div>
                       ))}
@@ -121,7 +141,7 @@ const Chat = (user) => {
                     
                     <div className="message-input">
                       <img
-                        src={chatspic}
+                        src={img}
                         alt="avatar 3"
                         className="input-avatar"
                       />
