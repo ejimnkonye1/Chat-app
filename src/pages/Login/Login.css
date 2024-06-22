@@ -1,0 +1,11 @@
+.input-box label {
+    transition: all 0.3s ease;
+}
+
+.input-box input:focus + label,
+.input-box input.not-empty + label {
+    top: -20px;
+    left: 0;
+    font-size: 12px;
+    color: gray;
+}
