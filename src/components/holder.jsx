@@ -7,9 +7,18 @@ import { FaPaperPlane } from "react-icons/fa";
 import '../css/holder.css'
 import { CiSearch } from "react-icons/ci";
 import img from '../assets/IMG_2278.jpg'
+import { useSelector } from 'react-redux';
 const Holder = () => {
+    
+    const darkmode = useSelector((state)=> state.darkMode)
+    const style = {
+        backgroundColor : darkmode ? '#000' : "#fff",
+        color: darkmode ? '#FFF' : '#000',
+        transition: 'all 0.3s',
+    }
+
   return (
-    <section className="chat-section">
+    <section className="chat-section" style={style}>
       <div className="container py-5">
         <div className="row">
           <div className="col-md-12">

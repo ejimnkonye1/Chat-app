@@ -1,7 +1,25 @@
 import '../css/header.css'
+import { CiDark } from "react-icons/ci";
+import { setMode } from '../action';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { CiLight } from "react-icons/ci";
 export const Head = () => {
+    const darkMode = useSelector((state)=> state.darkMode)
+const dispatch = useDispatch();
+    const handleMode = () => {
+        dispatch(setMode(true));
+    }
+    const lightMode = () => {
+        dispatch(setMode(false));
+    }
+    const style = {
+        backgroundColor : darkMode ? '#000' : "#fff",
+        color: darkMode ? '#FFF' : '#000',
+        transition: 'all 0.3s',
+    }
     return(
-        <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+        <nav class={`navbar navbar-expand-lg ${darkMode? "bg-dark" : "bg-body-tertiary"}`} >
   <div class="container-fluid">
     <a class="navbar-brand" href="#">ChatApp</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -14,28 +32,16 @@ export const Head = () => {
         <div className="center-items">
  <h6 className='text-secondary'>Logged in as Billie</h6>
         </div>
-      {/* <ul class="navbar-nav me-auto mb-2 mb-lg-0 d0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul> */}
+ 
+      <div >
+      {darkMode? (
+       
+       <CiLight onClick={lightMode} />
+      ) : (
+        < CiDark onClick={handleMode} /> 
+      )}
+      
+      </div>
       <form class="d-flex flex-row right-but">
         
         <button class="btn btn-outline-success" type="submit">Logout</button>
