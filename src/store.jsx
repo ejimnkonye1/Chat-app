@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 const initialState =  {
     darkMode: false,
+    chat: ''
 }
 const reducer = ( state = initialState, action) => {
 switch (action.type) {
@@ -9,7 +10,11 @@ switch (action.type) {
             ...state,
             darkMode: action.payload
         }
-    
+        case "SET_CHAT":
+            return {
+          ...state,
+          chat: action.payload
+      }
 
     default:
         return state;

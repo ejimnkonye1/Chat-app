@@ -8,15 +8,20 @@ import '../css/holder.css'
 import { CiSearch } from "react-icons/ci";
 import img from '../assets/IMG_2278.jpg'
 import { useSelector } from 'react-redux';
-const Holder = () => {
-    
+import { useDispatch } from 'react-redux';
+import { setChat } from '../action';
+const Holder = ({}) => {
+    const dispatch = useDispatch()
+    const chatspic = useSelector((state) => state.chat)
     const darkmode = useSelector((state)=> state.darkMode)
     const style = {
         backgroundColor : darkmode ? '#000' : "#fff",
         color: darkmode ? '#FFF' : '#000',
         transition: 'all 0.3s',
     }
-
+const Chat = (user) => {
+    dispatch(setChat(user))
+}
   return (
     <section className="chat-section" style={style}>
       <div className="container py-5">
@@ -42,12 +47,12 @@ const Holder = () => {
                         </span>
                       </div>
                       <div className="user-list">
-                        <ul className="list-unstyled mb-0">
+                        <ul className="list-unstyled mb-0" >
                           {chatUsers.map((user, index) => (
                             <li className="p-2 border-bottom" key={index}>
                               <a href="#!" className="d-flex justify-content-between billie-link">
                                 <div className="d-flex flex-row">
-                                  <div>
+                                  <div onClick={() => Chat(user.imgSrc)}>
                                     <img
                                       src={user.imgSrc}
                                       alt="pic"
@@ -83,12 +88,20 @@ const Holder = () => {
                           className={`d-flex flex-row justify-content-${msg.align}`}
                           key={index}
                         >
-                          <img
+                          {/* <img
                             src={msg.imgSrc}
 
                             alt="avatar 1"
                             className="message-avatar"
-                          />
+                          /> */}
+
+            <img
+                src={msg.align === 'end' ? msg.imgSrc : chatspic}
+                alt="avatar 1"
+                className="message-avatar"
+            />
+            
+          
                           <div>
                             <p
                               className={`small p-2 ms-3 mb-1 rounded-3 ${
@@ -108,7 +121,7 @@ const Holder = () => {
                     
                     <div className="message-input">
                       <img
-                        src={img}
+                        src={chatspic}
                         alt="avatar 3"
                         className="input-avatar"
                       />
