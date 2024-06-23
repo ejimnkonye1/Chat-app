@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+
 import Holder from './components/holder'
 import { Head } from './components/header'
 import { useSelector } from 'react-redux'
@@ -18,9 +18,9 @@ const App = () => {
     transition: 'all 0.3s',
 }
   return (
-<div style={style} >
-//     <Head />
-//       <Holder />
+<div  >
+    {/* <Head />
+    <Holder /> */}
       <Router>
         <Routes>
           <Route path="/" element={<Login/>}/>
