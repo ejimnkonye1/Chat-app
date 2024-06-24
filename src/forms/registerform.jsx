@@ -45,6 +45,7 @@ const RegisterForm = ({ setIsRegister }) => {
     } else {
       alert('user not registered')
     }
+
   };
 
   const handleEmail = (event) => {
