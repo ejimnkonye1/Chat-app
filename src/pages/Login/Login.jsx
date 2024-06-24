@@ -1,16 +1,29 @@
 import { useState } from 'react';
+import { Navigate,Link } from 'react-router-dom';
+import { doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../firebase/Auth';
+import { useAuth } from '../../contexts/authContext';
 import 'boxicons/css/boxicons.min.css';
 import BackgroundImage from '../../assets/pexels-pixabay-276452.jpg';
-import './Login.css'
 
 const LoginRegisterForm = () => {
+    const { userLoggedIn } = useAuth();
+
     const [isRegister, setIsRegister] = useState(false);
+    const [isSignedIn, setIsSignedIn] = useState(false);
     const [isPopupActive, setIsPopupActive] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: ''
     });
+
+    const onSubmit = async (e) => {
+        e.preventDefault()
+        if(!isSignedIn) {
+            setIsSignedIn(true)
+            await doSignInWithEmailAndPassword(email, password)
+        }
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -23,7 +36,7 @@ const LoginRegisterForm = () => {
             style={{ backgroundImage: `url(${BackgroundImage})` }}
         >
             <header className="fixed w-full top-0 right-0 z-50 bg-blue-500 p-8 flex items-center justify-between">
-                <div className="text-4xl font-bold text-white">BILLIE(NZ) YARN</div>
+                <div className="text-4xl font-bold text-white">BILLIE(NZ)</div>
                 <nav className="flex items-center">
                     {["About", "Services", "Contact"].map((item) => (
                         <a
