@@ -22,7 +22,7 @@ const RegisterForm = ({ setIsRegister }) => {
     event.preventDefault();
 
     const valid = validateForm();
-    if(formValid) {
+    if(valid) {
       try {
       await createUserWithEmailAndPassword(auth, email, password);
       alert('successful')
