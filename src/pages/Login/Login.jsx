@@ -25,12 +25,23 @@ const LoginRegisterForm = () => {
         }
     }
 
+    const onGoogleSignIn = (e) => {
+        e.preventDefault()
+        if(!isSignedIn) {
+            setIsSignedIn(true) 
+            doSignInWithGoogle().catch(err => {
+                setIsSignedIn(false)
+            })
+        }
+    }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
     return (
+        {userLoggedIn && (<Navigate to={'../../components/chatUser.jsx/'} replace={true} />)}
         <div className='cf-relative cf-min-h-screen cf-flex cf-items-center cf-justify-center cf-bg-cover cf-bg-center'
         style={{ backgroundImage: `url(${BackgroundImage})` }}
    >
@@ -63,7 +74,10 @@ const LoginRegisterForm = () => {
      >
        <div className={`cf-main-box ${isRegister ? 'cf-register' : 'cf-login'} cf-p-16 cf-w-full`}>
          <h1 className="cf-text-gray-900 cf-text-center cf-text-4xl cf-font-bold">{isRegister ? 'Registration' : 'Login'}</h1>
-         <form action="">
+         <form 
+         action=""
+         onSubmit={onSubmit}
+         >
            {isRegister && (
              <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
                <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]"><i className='bx bxs-user'></i></span>
