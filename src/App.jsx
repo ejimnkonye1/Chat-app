@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
     
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from './pages/Login/Login'
+import Register from './pages/signup'
 const App = () => {
    const darkmode = useSelector((state)=> state.darkMode)
   const style = {
@@ -24,6 +25,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Login/>}/>
+          <Route path="/sign" element={<Register/>}/>
         </Routes>
       </Router>
 

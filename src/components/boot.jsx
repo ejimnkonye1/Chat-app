@@ -169,12 +169,7 @@ const LoginRegister = () => {
               </div>
             </form>
           </div>
-          <span
-            className="position-absolute top-0 start-0 p-2 bg-dark text-white d-flex align-items-center justify-content-center fs-3 cursor-pointer"
-            onClick={() => setIsPopupActive(false)}
-          >
-            <i className="bx bx-x"></i>
-          </span>
+         
         </div>
       </div>
     );
