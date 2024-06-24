@@ -31,99 +31,98 @@ const LoginRegisterForm = () => {
     };
 
     return (
-        <div
-            className='relative min-h-screen flex items-center justify-center bg-cover bg-center'
-            style={{ backgroundImage: `url(${BackgroundImage})` }}
-        >
-            <header className="fixed w-full top-0 right-0 z-50 bg-blue-500 p-8 flex items-center justify-between">
-                <div className="text-4xl font-bold text-white">BILLIE(NZ)</div>
-                <nav className="flex items-center">
-                    {["About", "Services", "Contact"].map((item) => (
-                        <a
-                            key={item}
-                            href="#"
-                            className="relative text-white text-lg font-medium ml-11 hover:before:w-full before:absolute before:content-[''] before:left-0 before:bottom-[-4px] before:w-0 before:h-0.5 before:bg-white before:rounded before:transition-all before:duration-450"
-                        >
-                            {item}
-                        </a>
-                    ))}
-                    <button
-                        onClick={() => setIsPopupActive(!isPopupActive)}
-                        className="inline-block px-8 py-2.5 bg-transparent text-white border-2 border-white rounded-lg text-lg font-medium ml-11 transition-transform duration-450 hover:scale-110 hover:bg-white hover:text-gray-800"
-                    >
-                        Login
-                    </button>
-                </nav>
-            </header>
+        <div className='cf-relative cf-min-h-screen cf-flex cf-items-center cf-justify-center cf-bg-cover cf-bg-center'
+        style={{ backgroundImage: `url(${BackgroundImage})` }}
+   >
+     <header className="cf-fixed cf-w-full cf-top-0 cf-right-0 cf-z-50 cf-bg-blue-500 cf-p-8 cf-flex cf-items-center cf-justify-between">
+       <div className="cf-text-4xl cf-font-bold cf-text-white">BILLIE(NZ) YARN</div>
+       <nav className="cf-flex cf-items-center">
+         {["About", "Services", "Contact"].map((item, index) => (
+           <a
+             key={index}
+             href="#"
+             className="cf-relative cf-text-white cf-text-lg cf-font-medium cf-ml-11 cf-hover:before:w-full cf-before:absolute cf-before:content-[''] cf-before:left-0 cf-before:bottom-[-4px] cf-before:w-0 cf-before:h-0.5 cf-before:bg-white cf-before:rounded cf-before:transition-all cf-before:duration-450"
+           >
+             {item}
+           </a>
+         ))}
+         <button
+           onClick={() => setIsPopupActive(!isPopupActive)}
+           className="cf-inline-block cf-px-8 cf-py-2.5 cf-bg-transparent cf-text-white cf-border-2 cf-border-white cf-rounded-lg cf-text-lg cf-font-medium cf-ml-11 cf-transition-transform cf-duration-450 cf-hover:scale-110 cf-hover:bg-white cf-hover:text-gray-800"
+         >
+           Login
+         </button>
+       </nav>
+     </header>
 
-            <div
-                className={`container relative h-[530px] w-[460px] border-3 border-white/40 backdrop-blur-[25px] shadow-lg flex items-center justify-center rounded-3xl overflow-hidden ${
-                    isPopupActive ? 'scale-100' : 'scale-0'
-                } transition-transform duration-500`}
-                style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
-            >
-                <div className={`main-box ${isRegister ? 'register' : 'login'} p-16 w-full`}>
-                    <h1 className="text-gray-900 text-center text-4xl font-bold">{isRegister ? 'Registration' : 'Login'}</h1>
-                    <form action="">
-                        {isRegister && (
-                            <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
-                                <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]"><i className='bx bxs-user'></i></span>
-                                <input 
-                                    type="text"
-                                    name="username"
-                                    required 
-                                    className={`bg-transparent w-full h-full text-lg font-semibold text-gray-900 pl-1.5 pr-7.5 pb-5 ${formData.username ? 'not-empty' : ''}`}
-                                    value={formData.username}
-                                    onChange={handleInputChange}
-                                />
-                                <label className="absolute left-1.5 top-1/2 transform -translate-y-1/2 text-gray-900 text-lg font-medium transition-all duration-450 pointer-events-none">Username</label>
-                            </div>
-                        )}
-                        <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
-                            <span className="icon absolute right-2.5  text-lg text-gray-900 leading-[55px]"><i className='bx bxs-envelope'></i></span>
-                            <input 
-                                type="email" 
-                                name="email"
-                                required 
-                                className={`bg-transparent w-full h-full text-lg font-semibold text-gray-900 pl-1.5 pr-7.5 pb-5 ${formData.email ? 'not-empty' : ''}`}
-                                value={formData.email}
-                                onChange={handleInputChange}
-                            />
-                            <label className="absolute left-1.5 top-1/2 transform -translate-y-1/2 text-gray-900 text-lg font-medium transition-all duration-450 pointer-events-none">Email</label>
-                        </div>
-                        <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
-                            <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]"><i className='bx bxs-lock-alt'></i></span>
-                            <input 
-                                type="password" 
-                                name="password"
-                                required 
-                                className={`bg-transparent w-full h-full text-lg font-semibold text-gray-900 pl-1.5 pr-7.5 pb-5 ${formData.password ? 'not-empty' : ''}`}
-                                value={formData.password}
-                                onChange={handleInputChange}
-                            />
-                            <label className="absolute left-1.5 top-1/2 transform -translate-y-1/2 text-gray-900 text-lg font-medium transition-all duration-450 pointer-events-none">Password</label>
-                        </div>
-                        {isRegister ? (
-                            <div className="check flex justify-between text-gray-900 text-sm font-medium mt-[-14px] mb-4">
-                                <label className="flex items-center"><input type="checkbox" className="mr-1.5 accent-gray-900" />I accept all terms & conditions</label>
-                            </div>
-                        ) : (
-                            <div className="check flex justify-between text-gray-900 text-sm font-medium mt-[-14px] mb-4">
-                                <label className="flex items-center"><input type="checkbox" className="mr-1.5 accent-gray-900" />Remember me</label>
-                                <a href="#" className="hover:underline">Forget Password</a>
-                            </div>
-                        )}
-                        <button type="submit" className="bg-gray-900 w-full h-[43px] rounded-lg font-semibold text-white cursor-pointer">{isRegister ? 'Register Here' : 'Login'}</button>
-                        <div className="register text-center text-gray-900 text-sm font-medium mt-8 mb-4">
-                            <p>{isRegister ? 'Already have an account?' : "If you don't have an account?"} <a href="#" onClick={() => setIsRegister(!isRegister)} className="font-semibold hover:underline">{isRegister ? 'Login!' : 'Register Here'}</a></p>
-                        </div>
-                    </form>
-                </div>
-                <span className="close-icon absolute left-0 top-0 w-11 h-11 bg-gray-900 text-white flex items-center justify-center text-3xl cursor-pointer" onClick={() => setIsPopupActive(false)}>
-                    <i className='bx bx-x'></i>
-                </span>
-            </div>
-        </div>
+     <div
+       className={`cf-container cf-relative cf-h-[530px] cf-w-[460px] cf-border-3 cf-border-white/40 cf-backdrop-blur-[25px] cf-shadow-lg cf-flex cf-items-center cf-justify-center cf-rounded-3xl cf-overflow-hidden ${
+         isPopupActive ? 'cf-scale-100' : 'cf-scale-0'
+       } cf-transition-transform cf-duration-500`}
+       style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+     >
+       <div className={`cf-main-box ${isRegister ? 'cf-register' : 'cf-login'} cf-p-16 cf-w-full`}>
+         <h1 className="cf-text-gray-900 cf-text-center cf-text-4xl cf-font-bold">{isRegister ? 'Registration' : 'Login'}</h1>
+         <form action="">
+           {isRegister && (
+             <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
+               <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]"><i className='bx bxs-user'></i></span>
+               <input
+                 type="text"
+                 name="username"
+                 required
+                 className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${formData.username ? 'cf-not-empty' : ''}`}
+                 value={formData.username}
+                 onChange={handleInputChange}
+               />
+               <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">Username</label>
+             </div>
+           )}
+           <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
+             <span className="cf-icon cf-absolute cf-right-2.5  cf-text-lg cf-text-gray-900 cf-leading-[55px]"><i className='bx bxs-envelope'></i></span>
+             <input
+               type="email"
+               name="email"
+               required
+               className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${formData.email ? 'cf-not-empty' : ''}`}
+               value={formData.email}
+               onChange={handleInputChange}
+             />
+             <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">Email</label>
+           </div>
+           <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
+             <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]"><i className='bx bxs-lock-alt'></i></span>
+             <input
+               type="password"
+               name="password"
+               required
+               className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${formData.password ? 'cf-not-empty' : ''}`}
+               value={formData.password}
+               onChange={handleInputChange}
+             />
+             <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">Password</label>
+           </div>
+           {isRegister ? (
+             <div className="cf-check cf-flex cf-justify-between cf-text-gray-900 cf-text-sm cf-font-medium cf-mt-[-14px] cf-mb-4">
+               <label className="cf-flex cf-items-center"><input type="checkbox" className="cf-mr-1.5 cf-accent-gray-900" />I accept all terms & conditions</label>
+             </div>
+           ) : (
+             <div className="cf-check cf-flex cf-justify-between cf-text-gray-900 cf-text-sm cf-font-medium cf-mt-[-14px] cf-mb-4">
+               <label className="cf-flex cf-items-center"><input type="checkbox" className="cf-mr-1.5 cf-accent-gray-900" />Remember me</label>
+               <a href="#" className="cf-hover:underline">Forget Password</a>
+             </div>
+           )}
+           <button type="submit" className="cf-bg-gray-900 cf-w-full cf-h-[43px] cf-rounded-lg cf-font-semibold cf-text-white cf-cursor-pointer">{isRegister ? 'Register Here' : 'Login'}</button>
+           <div className="cf-register cf-text-center cf-text-gray-900 cf-text-sm cf-font-medium cf-mt-8 cf-mb-4">
+             <p>{isRegister ? 'Already have an account?' : "If you don't have an account?"} <a href="#" onClick={() => setIsRegister(!isRegister)} className="cf-font-semibold cf-hover:underline">{isRegister ? 'Login!' : 'Register Here'}</a></p>
+           </div>
+         </form>
+       </div>
+       <span className="cf-close-icon cf-absolute cf-left-0 cf-top-0 cf-w-11 cf-h-11 cf-bg-gray-900 cf-text-white cf-flex cf-items-center cf-justify-center cf-text-3xl cf-cursor-pointer" onClick={() => setIsPopupActive(false)}>
+         <i className='bx bx-x'></i>
+       </span>
+     </div>
+   </div>
     );
 };
 
