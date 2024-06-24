@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+
 export default {
   prefix: 'cf-', // Add your desired prefix here
   content: [
