@@ -16,7 +16,7 @@ const dispatch = useDispatch();
     const style = {
         backgroundColor : darkMode ? '#000' : "#fff",
         color: darkMode ? '#FFF' : '#000',
-        transition: 'all 0.3s',
+        transition: 'all 0.4s',
     }
     return(
         <nav class={`navbar navbar-expand-lg ${darkMode? "bg-dark" : "bg-body-tertiary"}`} >
