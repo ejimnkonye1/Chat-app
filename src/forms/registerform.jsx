@@ -11,7 +11,7 @@ const RegisterForm = ({ setIsRegister }) => {
 
 
   const validateForm = () => {
-    const passwordValue = password.trim
+    const passwordValue = password.trim()
     const passwordLength = passwordValue.length >= 8
 
     setFormValid(passwordLength);
@@ -29,7 +29,9 @@ const RegisterForm = ({ setIsRegister }) => {
     } catch(err) {
         console.log(err)
     }
-    } 
+    } else {
+        alert ('password error')
+    }
     
   };
 
