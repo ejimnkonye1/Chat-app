@@ -20,7 +20,6 @@ const App = () => {
     transition: 'all 0.3s',
 }
   return (
-<div  >
     
       <Router>
         <Routes>
@@ -29,7 +28,7 @@ const App = () => {
         </Routes>
       </Router>
 
-    </div>
+
   )
 }
 

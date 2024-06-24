@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../login/Login.css';
 
 const LoginForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
@@ -62,7 +63,6 @@ const LoginForm = ({ setIsRegister }) => {
         Login
       </button>
       <div className="cf-register cf-text-center cf-text-gray-900 cf-text-sm cf-font-medium cf-mt-8 cf-mb-4">
-        {/* <p>If you don't have an account? <a href="#" className="cf-font-semibold cf-hover:underline">Register Here</a></p> */}
         <p>If you don't have an account? <a href="#" onClick={() => setIsRegister(true)} className="cf-font-semibold cf-hover:underline">Register Here</a></p>
       </div>
     </form>
