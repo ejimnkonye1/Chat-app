@@ -4,6 +4,7 @@ import { setMode } from '../action';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { CiLight } from "react-icons/ci";
+// import 'bootstrap/dist/css/bootstrap.min.css';
 export const Head = () => {
     const darkMode = useSelector((state)=> state.darkMode)
 const dispatch = useDispatch();
