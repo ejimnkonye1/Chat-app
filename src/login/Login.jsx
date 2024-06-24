@@ -3,14 +3,15 @@ import { Navigate,Link } from 'react-router-dom';
 // import { doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../firebase/Auth';
 // import { useAuth } from '../../contexts/authContext';
 import 'boxicons/css/boxicons.min.css';
-import BackgroundImage from '../../assets/pexels-pixabay-276452.jpg';
+
 // import { doSignInWithEmailAndPassword } from '../../firebase/Auth';
 // import { doSignInWithEmailAndPassword } from '../../Auth';
-import { auth } from '../../Firebase';
+import { auth } from '../Firebase';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import Register from '../signup';
-import LoginForm from './signin';
+
+import LoginForm from '../forms/loginform';
+import RegisterForm from '../forms/registerform';
 const LoginRegisterForm = () => {
     // const { userLoggedIn } = useAuth();
 
@@ -101,7 +102,7 @@ const LoginRegisterForm = () => {
 
           
 <div>
-  <Register setIsRegister={setIsRegister} />
+  <RegisterForm setIsRegister={setIsRegister} />
 
 </div>
           

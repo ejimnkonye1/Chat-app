@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-const Register = ({ setIsRegister }) => {
+const RegisterForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formData, setFormData] = useState({ email: '', password: '' });
 
   const handleUser = (event) => {
     event.preventDefault();
-    // handle form submission logic
+  
   };
 
   const handleEmail = (event) => {
@@ -84,4 +84,4 @@ const Register = ({ setIsRegister }) => {
   );
 };
 
-export default Register;
+export default RegisterForm;
