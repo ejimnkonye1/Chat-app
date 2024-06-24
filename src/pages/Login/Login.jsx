@@ -1,35 +1,55 @@
 import { useState } from 'react';
 import { Navigate,Link } from 'react-router-dom';
-import { doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../firebase/Auth';
-import { useAuth } from '../../contexts/authContext';
+// import { doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../firebase/Auth';
+// import { useAuth } from '../../contexts/authContext';
 import 'boxicons/css/boxicons.min.css';
 import BackgroundImage from '../../assets/pexels-pixabay-276452.jpg';
-
+// import { doSignInWithEmailAndPassword } from '../../firebase/Auth';
+// import { doSignInWithEmailAndPassword } from '../../Auth';
+import { auth } from '../../Firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
 const LoginRegisterForm = () => {
-    const { userLoggedIn } = useAuth();
+    // const { userLoggedIn } = useAuth();
 
-    const [isRegister, setIsRegister] = useState(false);
-    const [isSignedIn, setIsSignedIn] = useState(false);
-    const [isPopupActive, setIsPopupActive] = useState(false);
-    const [formData, setFormData] = useState({
+    const [email, setEmail] = useState('')
+    const [ password, setPassword] = useState('')
+     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: ''
     });
-
-    const onSubmit = async (e) => {
+  
+     const [isSignedIn, setIsSignedIn] = useState(false);
+    const [isPopupActive, setIsPopupActive] = useState(false);
+    const [isRegister, setIsRegister] = useState(false);
+    const handleUser = async (e) => {
         e.preventDefault()
         if(!isSignedIn) {
             setIsSignedIn(true)
-            await doSignInWithEmailAndPassword(email, password)
+            try{
+              await signInWithEmailAndPassword(auth,email, password)
+            }catch(err){
+              console.error(err)
+            }
+            
         }
     }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        
     };
-
+    const handleemail = (e) => {
+    setEmail(e.target.value)
+    console.log(email)
+      
+  };
+  const handlepassword = (e) => {
+    setPassword(e.target.value)
+    console.log(password)
+      
+  };
     return (
         <div className='cf-relative cf-min-h-screen cf-flex cf-items-center cf-justify-center cf-bg-cover cf-bg-center'
         style={{ backgroundImage: `url(${BackgroundImage})` }}
@@ -63,18 +83,11 @@ const LoginRegisterForm = () => {
      >
        <div className={`cf-main-box ${isRegister ? 'cf-register' : 'cf-login'} cf-p-16 cf-w-full`}>
          <h1 className="cf-text-gray-900 cf-text-center cf-text-4xl cf-font-bold">{isRegister ? 'Registration' : 'Login'}</h1>
-         <form action="">
+         <form action="" onSubmit={handleUser}>
            {isRegister && (
              <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
                <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]"><i className='bx bxs-user'></i></span>
-               <input
-                 type="text"
-                 name="username"
-                 required
-                 className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${formData.username ? 'cf-not-empty' : ''}`}
-                 value={formData.username}
-                 onChange={handleInputChange}
-               />
+               
                <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">Username</label>
              </div>
            )}
@@ -85,8 +98,9 @@ const LoginRegisterForm = () => {
                name="email"
                required
                className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${formData.email ? 'cf-not-empty' : ''}`}
-               value={formData.email}
-               onChange={handleInputChange}
+              //  value={formData.email}
+               value={email}
+               onChange={handleemail}
              />
              <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">Email</label>
            </div>
@@ -97,8 +111,9 @@ const LoginRegisterForm = () => {
                name="password"
                required
                className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${formData.password ? 'cf-not-empty' : ''}`}
-               value={formData.password}
-               onChange={handleInputChange}
+              //  value={formData.password}
+               onChange={handlepassword}
+               value={password}
              />
              <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">Password</label>
            </div>
