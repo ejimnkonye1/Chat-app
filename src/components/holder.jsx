@@ -16,7 +16,7 @@ import io from 'socket.io-client';
 
 const Holder = () => {
 
-  const socket = io('http://localhost:5180')
+  const socket = io('http://localhost:3005')
   const [searchQuery , setSearchQuery] = useState()
   const [chating, setChatting] = useState()
   const [mes, setMes] = useState()
