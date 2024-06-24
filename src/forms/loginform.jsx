@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import '../login/Login.css';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../Firebase';
 
 const LoginForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {erromes, setErrormes} = useState()
 
-  const handleUser = (event) => {
-    event.preventDefault();
-    // handle form submission logic
+  const handleUser = async (e) => {
+    e.preventDefault();
+    try{
+        await signInWithEmailAndPassword(auth, email,password)
+    }catch (err){
+   console.log(err)
+   setErrormes(err)
+    }
   };
 
   const handleEmail = (event) => {
