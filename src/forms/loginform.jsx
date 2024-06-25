@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../login/Login.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../Firebase';
@@ -7,11 +8,13 @@ const LoginForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {erromes, setErrormes} = useState()
+  const Navigate = useNavigate()
 
   const handleUser = async (e) => {
     e.preventDefault();
     try{
         await signInWithEmailAndPassword(auth, email,password)
+        Navigate('/chatbox');
     }catch (err){
    console.log(err)
    setErrormes(err)

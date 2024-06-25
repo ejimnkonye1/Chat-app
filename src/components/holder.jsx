@@ -12,11 +12,11 @@ import { useDispatch } from 'react-redux';
 import { setChat } from '../action';
 import { setImg } from '../action';
 import Search from './search';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 const Holder = () => {
 
-  const socket = io('http://localhost:3005')
+  // const socket = io('http://localhost:3005')
   const [searchQuery , setSearchQuery] = useState()
   const [chating, setChatting] = useState()
   const [mes, setMes] = useState()
