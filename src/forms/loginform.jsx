@@ -7,17 +7,20 @@ import { auth } from '../Firebase';
 const LoginForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {erromes, setErrormes} = useState()
+  const [erromes, setError] = useState('')
   const Navigate = useNavigate()
 
   const handleUser = async (e) => {
     e.preventDefault();
     try{
         await signInWithEmailAndPassword(auth, email,password)
+        dispatch(email)
+
         Navigate('/chatbox');
     }catch (err){
-   console.log(err)
-   setErrormes(err)
+   console.error(err)
+  setError(err.message)
+  console.log(`this is error: ${erromes}`)
     }
   };
 
@@ -35,6 +38,7 @@ const LoginForm = ({ setIsRegister }) => {
         <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]">
           <i className='bx bxs-envelope'></i>
         </span>
+        {erromes && <p className='text-danger'>{erromes}</p>}
         <input
           type="email"
           name="email"

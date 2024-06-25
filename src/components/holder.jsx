@@ -70,23 +70,6 @@ const filterSearch = chatUsers.filter(({name}) => {
 
 })
 
-useEffect(()=> {
-   // Example: Listen for messages from server
-   socket.on('chat message', (msg) => {
-    const messagesList = document.getElementById('messages');
-    const li = document.createElement('li');
-    li.textContent = msg;
-    messagesList.appendChild(li);
-    console.log(msg)
-});
-socket.on('message', (msg) => {
-    const messagesList = document.getElementById('messages');
-    const li = document.createElement('li');
-    li.textContent = msg;
-    messagesList.appendChild(li);
-    console.log(msg)
-});
-}, [])
   return (
     <section className="chat-section" style={style}>
       <div className="container py-5">
