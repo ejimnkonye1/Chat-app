@@ -3,11 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import '../login/Login.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../Firebase';
+import { handlePasswordReset } from './resetPasswordform';
 
 const LoginForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {erromes, setErrormes} = useState()
+  const [resetEmail, setResetEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('')
+
   const Navigate = useNavigate()
 
   const handleUser = async (e) => {
@@ -28,7 +33,17 @@ const LoginForm = ({ setIsRegister }) => {
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
-
+  
+  const handleResetPasswordRequest = async (e) => {
+      e.preventDefault()
+      Navigate=('/requestpassword')
+      const result = await handlePasswordReset (resetEmail);
+      if(result.success){
+          setMessage(result.message)
+      }else{
+        setError(result.message)
+      }
+  }
   return (
     <form action="" onSubmit={handleUser}>
       <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
@@ -68,7 +83,7 @@ const LoginForm = ({ setIsRegister }) => {
           <input type="checkbox" className="cf-mr-1.5 cf-accent-gray-900" />
           Remember me
         </label>
-        <a href="#" className="cf-hover:underline">Forget Password</a>
+        <a href="#" className="cf-hover:underline" >Forget Password</a>
       </div>
       <button type="submit" className="cf-bg-gray-900 cf-w-full cf-h-[43px] cf-rounded-lg cf-font-semibold cf-text-white cf-cursor-pointer">
         Login
