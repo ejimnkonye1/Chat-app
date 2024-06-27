@@ -12,17 +12,19 @@ const LoginForm = ({ setIsRegister }) => {
   const [resetEmail, setResetEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('')
-
   const Navigate = useNavigate()
 
   const handleUser = async (e) => {
     e.preventDefault();
     try{
         await signInWithEmailAndPassword(auth, email,password)
+        // dispatch(email)
+
         Navigate('/chatbox');
     }catch (err){
-   console.log(err)
-   setErrormes(err)
+   console.error(err)
+  setError(err.message)
+  console.log(`this is error: ${erromes}`)
     }
   };
 
@@ -50,6 +52,7 @@ const LoginForm = ({ setIsRegister }) => {
         <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]">
           <i className='bx bxs-envelope'></i>
         </span>
+        {erromes && <p className='text-danger'>{erromes}</p>}
         <input
           type="email"
           name="email"
@@ -83,7 +86,9 @@ const LoginForm = ({ setIsRegister }) => {
           <input type="checkbox" className="cf-mr-1.5 cf-accent-gray-900" />
           Remember me
         </label>
+        <form onSubmit={handleResetPasswordRequest}>
         <a href="#" className="cf-hover:underline" >Forget Password</a>
+        </form>
       </div>
       <button type="submit" className="cf-bg-gray-900 cf-w-full cf-h-[43px] cf-rounded-lg cf-font-semibold cf-text-white cf-cursor-pointer">
         Login
