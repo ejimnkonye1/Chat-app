@@ -1,13 +1,52 @@
 import React, { useState } from 'react';
-
+import '../login/Login.css';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../Firebase'
 const RegisterForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [passwordIsValid, setPasswordIsValid] = useState(false);
+  const [formValid, setFormValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
 
-  const handleUser = (event) => {
+
+  const validateForm = () => {
+    const passwordValue = password.trim()
+    const passwordLength = passwordValue.length >= 8
+
+    setFormValid(passwordLength);
+    return passwordLength;
+  }
+
+  const validateEmail = () => {
+    const emailValue = email.trim();
+    const emailType = emailValue.includes('@');
+
+    setEmailValid(emailType);
+    return emailType;
+
+  }
+  const handleUser = async (event) => {
     event.preventDefault();
-  
+
+    const valid = validateForm();
+    const isEmail = validateEmail();
+    if(valid, isEmail) {
+      try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert('successful')
+      .then((useremail) => {
+        const user = useremail.user
+        console.log(user)
+
+      })
+    } catch(err) {
+        console.log(err)
+    }
+    } else {
+      alert('user not registered')
+    }
   };
 
   const handleEmail = (event) => {

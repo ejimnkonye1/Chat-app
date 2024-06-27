@@ -12,6 +12,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 import LoginForm from '../forms/loginform';
 import RegisterForm from '../forms/registerform';
+import RequestPasswordform from '../forms/requestPassword';
 const LoginRegisterForm = () => {
     // const { userLoggedIn } = useAuth();
 
@@ -29,7 +30,7 @@ const LoginRegisterForm = () => {
      const [isSignedIn, setIsSignedIn] = useState(false);
     const [isPopupActive, setIsPopupActive] = useState(false);
     const [isRegister, setIsRegister] = useState(false);
-
+    const [forgetpage, setfogetPage] = useState(false)
 
 
     const handleRegister = async (e) => {
@@ -95,14 +96,16 @@ const LoginRegisterForm = () => {
        style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
      >
        <div className={`cf-main-box ${isRegister ? 'cf-register' : 'cf-login'} cf-p-16 cf-w-full`}>
-         <h1 className="cf-text-gray-900 cf-text-center cf-text-4xl cf-font-bold">{isRegister ? 'Registration' : 'Login'}</h1>
+         <h1 className="cf-text-gray-900 cf-text-center cf-text-4xl cf-font-bold">{isRegister ? 'Registration' :forgetpage? 'forget': 'Login'}</h1>
 
 
         {isRegister? (
 
           
 <div>
-  <RegisterForm setIsRegister={setIsRegister} />
+  <RegisterForm setIsRegister={setIsRegister} 
+  
+  />
 
 </div>
           
@@ -110,7 +113,19 @@ const LoginRegisterForm = () => {
         ): (
 
             <div>
-           <LoginForm setIsRegister={setIsRegister} />
+              {forgetpage? (
+
+<RequestPasswordform 
+forgetpage={forgetpage}
+setfogetPage={setfogetPage}
+/>
+              ):(
+                <LoginForm setIsRegister={setIsRegister}
+                forgetpage={forgetpage}
+                setfogetPage={setfogetPage}
+                />
+              )}
+           
             </div>
         )}
 

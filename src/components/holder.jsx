@@ -11,7 +11,12 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setChat } from '../action';
 import { setImg } from '../action';
+import Search from './search';
+// import io from 'socket.io-client';
+
 const Holder = () => {
+
+  // const socket = io('http://localhost:3005')
   const [searchQuery , setSearchQuery] = useState()
   const [chating, setChatting] = useState()
   const [mes, setMes] = useState()
@@ -50,8 +55,8 @@ const sendMesBut = () => {
     setChatting('')
   
 }
-const handleSearchChange = (e) => {
-setSearchQuery(e.target.value)
+const handleSearchChange = (query) => {
+setSearchQuery(query)
 }
 const filterSearch = chatUsers.filter(({name}) => {
   if (name && 
@@ -64,6 +69,7 @@ const filterSearch = chatUsers.filter(({name}) => {
   }
 
 })
+
   return (
     <section className="chat-section" style={style}>
       <div className="container py-5">
@@ -75,20 +81,7 @@ const filterSearch = chatUsers.filter(({name}) => {
 
                 <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
         <div className="p-3">
-                      <div className="input-group rounded mb-3">
-                        <input
-                          type="search"
-                          className="form-control rounded"
-                          placeholder="Search"
-                          aria-label="Search"
-                          aria-describedby="search-addon"
-                          onChange={handleSearchChange}
-                        />
-                        <span className="input-group-text border-0" id="search-addon">
-                        <CiSearch />
-
-                        </span>
-                      </div>
+                     <Search  searchQuery={searchQuery} onSearchChange={handleSearchChange} />
                       <div className="user-list" >
                         {searchQuery ?(
                           <ul className="list-unstyled mb-0" >
@@ -160,6 +153,7 @@ const filterSearch = chatUsers.filter(({name}) => {
                         </ul>
                         )}
                       </div>
+
                     </div>
                   </div>
 
