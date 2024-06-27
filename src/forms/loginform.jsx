@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import '../login/Login.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../Firebase';
-import { handlePasswordReset } from './resetPasswordform';
-import RequestPasswordform from './requestPassword';
+
 
 const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {erromes, setErrormes} = useState()
+ 
   const [resetEmail, setResetEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('')
@@ -19,13 +18,13 @@ const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
     e.preventDefault();
     try{
         await signInWithEmailAndPassword(auth, email,password)
-        // dispatch(email)
+         
 
         Navigate('/chatbox');
     }catch (err){
    console.error(err)
   setError(err.message)
-  console.log(`this is error: ${erromes}`)
+  
     }
   };
 
@@ -36,26 +35,21 @@ const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
-  
-  const handleResetPasswordRequest = async (e) => {
-      e.preventDefault()
-      navigate=('/requestpassword')
-      const result = await handlePasswordReset (resetEmail);
-      if(result.success){
-          setMessage(result.message)
-      }else{
-        setError(result.message)
-      }
-  }
+  setTimeout(() => {
+    setError(false)
+  }, 5000);
+
   return (
     <div>
     
         <form action="" onSubmit={handleUser}>
+            {error && <p className='text-danger'>{error}</p>}
         <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
+      
           <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]">
             <i className='bx bxs-envelope'></i>
           </span>
-          {erromes && <p className='text-danger'>{erromes}</p>}
+          
           <input
             type="email"
             name="email"
