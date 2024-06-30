@@ -14,3 +14,19 @@
   .message-avatar{
     border-radius: 50%;
   }
+  .circle-icon{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(95, 10, 200);
+    columns: white;
+    border-radius: 50%;
+    margin:  10px;
+  }
+  .circle-icon1{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(95, 10, 200);
+    columns: white;
+    border-radius: 50%;
+    /* margin:  10px; */
+  }

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import '../login/Login.css';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {updateProfile, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../Firebase'
+
 const RegisterForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,14 +29,20 @@ const RegisterForm = ({ setIsRegister }) => {
     return emailType;
 
   }
-  const handleUser = async (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
 
     const valid = validateForm();
     const isEmail = validateEmail();
-    if(valid, isEmail) {
+    if(valid && isEmail) {
       try {
-      await createUserWithEmailAndPassword(auth, email, password);
+   const userData =   await createUserWithEmailAndPassword(auth, email, password);
+   const user = userData.user
+   console.log(user)
+      
+      updateProfile(user, {
+        displayName: `${username} `,
+      })
       setEmail('')
       setPassword('')
        setUsername('')
@@ -59,12 +66,12 @@ const RegisterForm = ({ setIsRegister }) => {
 setTimeout(() => {
   setError(false)
   // setsuccess(false)
-}, 6000);
+}, 8000);
 const handleusername = (event) => {
   setUsername(event.target.value);
 };
   return (
-    <form action="" onSubmit={handleUser}>
+    <form action="" onSubmit={handleRegister}>
       <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
       {erromes && <p className='text-danger'>{erromes}</p>}
       {success && <p className='text-danger'>Account has been created, You can now login with ur details</p>}

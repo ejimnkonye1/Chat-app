@@ -10,3 +10,10 @@ export const setChat = (cha) => ({
     type: "SET_IMG",
     payload:img
     })
+    export const setUsername = (user) => ({
+        type: "SET_USER",
+        payload:user
+        })
+    
+
+    

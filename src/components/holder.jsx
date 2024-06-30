@@ -19,7 +19,7 @@ const Holder = () => {
   // const socket = io('http://localhost:3005')
   const [searchQuery , setSearchQuery] = useState()
   const [chating, setChatting] = useState()
-  const [mes, setMes] = useState()
+  const [mes, setMes] = useState([])
     const dispatch = useDispatch()
     const chatspic = useSelector((state) => state.image)
     const chatstext = useSelector((state) => state.chat)
@@ -33,9 +33,7 @@ const handleChat = (message,imgSrc) => {
     dispatch(setChat(message))
     dispatch(setImg(imgSrc))
 }
-// useEffect(() => {
-//  dispatch(setChat(user.message))
-// },[user])
+
 
 const handleinputChange = (e) => {
   
@@ -45,13 +43,13 @@ const handleinputChange = (e) => {
 } 
 const sendMes = (e) => {
   if (e.key === 'Enter') {
-    setMes(chating)
+    setMes([...mes,chating]);
     setChatting('')
   }
 }
 const sendMesBut = () => {
 
-    setMes(chating)
+      setMes([...mes,chating]);
     setChatting('')
   
 }
@@ -158,48 +156,41 @@ const filterSearch = chatUsers.filter(({name}) => {
                   </div>
 
   <div className="col-md-6 col-lg-7 col-xl-8 " >
-  {chatspic && (   
+  
     <div className=''>      
-               <div className="chat-messages ">
-                            {chatMessages.map((msg, index) => (
-                              <div
-                                className={`d-flex flex-row justify-content-${msg.align}`}
-                                key={index}
-                              >
-                      
-                     {chatspic && (
-                      <img
-                      src={msg.align === 'end' ? mes? img :'' : chatspic}
-                      // alt="avatar 1"
-                      className={msg.align === 'end' ? mes? 'message-avatar': '' :  'message-avatar' }
-                  />
-                     )}
-                  
-                  
-                
-                                <div>
-                                
-                               <p
-                                    className={`small p-2 ms-3 mb-1 rounded-3 ${
-                                      msg.align === 'end' ? mes ? 'text-white bg-primary': '' :chatstext ? 'bg-body-tertiary' : ''
-                                    }`}>
-                                    
-                                    {msg.align === 'end' ? mes : chatstext}
-                                  </p>
-                                  
-                                  <p className="small ms-3 mb-3 rounded-3 text-muted float-end">
-                                
-                                    {mes &&(
-                                          <div>    {msg.time}</div>
-                                    )}
-                                  </p>
-                            
-                                
-                                 
-                                </div>
-                              </div>
-                            ))}
-              </div>
+    <div className="chat-messages">
+      {chatspic ?
+        <div className="d-flex flex-row align-items-center">
+        <img src={chatspic} className="message-avatar" alt="avatar" />
+        <div>
+          <p className={`small p-2 ms-3 mb-1 rounded-3 ${chatstext ? 'bg-body-tertiary' : ''}`}>
+            {chatstext}
+          </p>
+        </div>
+      </div> : ''
+    }
+  
+
+
+
+  {mes.map((displaytext, index) => (
+    <div key={index} className={`d-flex flex-row justify-content-end ${displaytext ? '' : 'hidden'}`}>
+    {displaytext && (
+      <div className="d-flex flex-row align-items-center">
+        <img src={img } className={ 'message-avatar' } alt="avatar" />
+        <div className=''>
+        <p className="small p-2 ms-3 mb-1 rounded-3 text-white bg-primary">{displaytext}</p>
+        </div>
+       
+      </div>
+    )}
+  </div>
+  ))}
+
+ 
+</div>
+
+
                 
                           
                           <div className="message-input">
@@ -229,7 +220,7 @@ const filterSearch = chatUsers.filter(({name}) => {
                             </a>
                           </div>
                           </div>
-                        )}
+                      
        </div>
 
   
