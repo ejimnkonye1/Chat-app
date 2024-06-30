@@ -1,3 +1,4 @@
+import React from 'react';
 import '../css/header.css'
 import { CiDark } from "react-icons/ci";
 import { setMode } from '../action';
@@ -6,7 +7,9 @@ import { useSelector } from 'react-redux';
 import { CiLight } from "react-icons/ci";
 import { IoMdLogOut } from "react-icons/io";
 // import 'bootstrap/dist/css/bootstrap.min.css';
+
 export const Head = () => {
+  const username = useSelector((state) => state.username);
     const darkMode = useSelector((state)=> state.darkMode)
 const dispatch = useDispatch();
     const handleMode = () => {
@@ -20,11 +23,15 @@ const dispatch = useDispatch();
         color: darkMode ? '#FFF' : '#000',
         transition: 'all 0.4s',
     }
+   
     return(
       <nav className={`navbar navbar-expand-lg ${darkMode ? "bg-dark" : "bg-body-tertiary"}`}>
       <div className="container-fluid">
         <a className="navbar-brand text-primary" href="#">ChatApp</a>
-        <span className="nav-link text-secondary">Logged in as Billie</span>
+        {username && (
+          <span className="nav-link text-secondary">Logged in as {username} </span>
+        )}
+        
         <div className="d-flex align-items-center">
           <span className="d-lg-none ms-2 mt-2 mr-2">
             {darkMode ? (

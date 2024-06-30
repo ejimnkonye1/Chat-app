@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../login/Login.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../Firebase';
+import { auth} from '../Firebase';
 
+import { useDispatch } from 'react-redux';
+import { setUsername } from '../action';
 
 const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
   const [email, setEmail] = useState('');
@@ -13,13 +15,16 @@ const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('')
   const Navigate = useNavigate()
-
-  const handleUser = async (e) => {
+const dispatch = useDispatch()
+  const handleUserSignIn = async (e) => {
     e.preventDefault();
     try{
-        await signInWithEmailAndPassword(auth, email,password)
-         
-
+       
+         const userData =  await signInWithEmailAndPassword(auth, email,password)
+          const user = userData.user
+          const username = user.displayName
+          dispatch(setUsername(username))
+         console.log(username)
         Navigate('/chatbox');
     }catch (err){
    console.error(err)
@@ -42,7 +47,7 @@ const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
   return (
     <div>
     
-        <form action="" onSubmit={handleUser}>
+        <form action="" onSubmit={handleUserSignIn}>
             {error && <p className='text-danger'>{error}</p>}
         <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
       
