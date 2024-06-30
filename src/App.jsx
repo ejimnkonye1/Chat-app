@@ -12,6 +12,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from './login/Login'
 import { ChatBox } from './components/chatbox'
 import RequestPassword from './forms/requestPassword'
+import Texting from './socket'
 
 const App = () => {
    const darkmode = useSelector((state)=> state.darkMode)
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/" element={<Login/>}/>
           <Route path="/chatbox" element={<ChatBox/>}/>
           <Route path="/requestpassword" element={<RequestPassword/>}/>
+          <Route path="/text" element={<Texting/>}/>
         </Routes>
       </Router>
 
