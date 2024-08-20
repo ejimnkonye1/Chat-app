@@ -13,6 +13,8 @@ import Login from './login/Login'
 import { ChatBox } from './components/chatbox'
 import RequestPassword from './forms/requestPassword'
 import Texting from './socket'
+import Hold from './components/test'
+import OnlineUsersList from './components/online'
 
 const App = () => {
    const darkmode = useSelector((state)=> state.darkMode)
@@ -28,7 +30,8 @@ const App = () => {
           <Route path="/" element={<Login/>}/>
           <Route path="/chatbox" element={<ChatBox/>}/>
           <Route path="/requestpassword" element={<RequestPassword/>}/>
-          <Route path="/text" element={<Texting/>}/>
+          <Route path="/text" element={<Hold/>}/>
+          <Route path="/on" element={<OnlineUsersList/>}/>
         </Routes>
       </Router>
 
