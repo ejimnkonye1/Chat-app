@@ -1,11 +1,15 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../login/Login.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth} from '../Firebase';
+import { auth, firestore} from '../Firebase';
 
 import { useDispatch } from 'react-redux';
 import { setUsername } from '../action';
+import { doc, getDoc } from 'firebase/firestore';
 
 const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
   const [email, setEmail] = useState('');
@@ -21,11 +25,16 @@ const dispatch = useDispatch()
     try{
        
          const userData =  await signInWithEmailAndPassword(auth, email,password)
-          const user = userData.user
-          const username = user.displayName
-          dispatch(setUsername(username))
-         console.log(username)
-        Navigate('/chatbox');
+          const user = userData.user.uid
+   const userdoc =      await getDoc(doc(firestore, 'users', user))
+        if (userdoc.exists){
+          console.log('user exists')
+          Navigate('/chatbox');
+        } else{
+          console.error('user not found', error)
+          setError(error)
+        }
+   
     }catch (err){
    console.error(err)
   setError(err.message)

@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import '../login/Login.css';
 import {updateProfile, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../Firebase'
+import { auth, firestore } from '../Firebase'
+import { doc, setDoc } from 'firebase/firestore';
 
 const RegisterForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
@@ -37,12 +39,14 @@ const RegisterForm = ({ setIsRegister }) => {
     if(valid && isEmail) {
       try {
    const userData =   await createUserWithEmailAndPassword(auth, email, password);
-   const user = userData.user
+   const user = userData.user.uid
+    await setDoc(doc(firestore, 'users', user), {
+  email,
+  username
+
+    })
    console.log(user)
       
-      updateProfile(user, {
-        displayName: `${username} `,
-      })
       setEmail('')
       setPassword('')
        setUsername('')
