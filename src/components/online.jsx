@@ -2,10 +2,14 @@
 import { useState, useEffect } from 'react';
 import { auth, firestore } from '../Firebase';
 import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
-import { Nav, UserChatTable } from './nav';
+import { CircleImage, Nav, UserChatTable } from './nav';
 import { Searchs } from './search';
-
+import { FiPaperclip } from "react-icons/fi";
+import { FaRegSmile } from "react-icons/fa";
+import { FaPaperPlane } from "react-icons/fa";
 const OnlineUsersList = () => {
+  const [showEmails, setShowEmails] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -94,10 +98,12 @@ const OnlineUsersList = () => {
           content: chatInput,
           timestamp: Timestamp.now(),
           read: false,
+          status:false
         });
 
         setMessages([...messages, { content: chatInput, senderId: senderId, receiverId: selectedUser.uid }]);
         setChatInput('');
+        
       } catch (err) {
         console.error('Error sending message', err);
       }
@@ -137,6 +143,11 @@ const OnlineUsersList = () => {
                     setSelectedUser={setSelectedUser}
                     messages={messages}
                     senderId={senderId}
+                    showEmails={showEmails}
+                    setShowEmails={setShowEmails}
+                    showChat={showChat}
+                    setShowChat={setShowChat}
+                    
                     />
                   </div>
                   <div className="col-md-6 col-lg-7 col-xl-8 border">
@@ -166,35 +177,13 @@ const OnlineUsersList = () => {
               _})}
             </ul>
 
-  {/* {messages.map((message, index) => (
-   
-    <div key={index}>
-      <div className="d-flex flex-row align-items-center">
-        {message.senderId === senderId ? (
-          <div>
-            <p className="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary"> {message.content}</p>
-          </div>
 
-        ) : (
-          <div className="d-flex flex-row justify-content-end">
-            <div className="d-flex flex-column justify-content-end">
-              <div className="d-flex align-items-center mb-3">
-               
-                <p className="small p-2 text-end rounded-3 text-white bg-primary">
-                   {message.content}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  ))} */}
 </div>
 
 
  <div className="message-input">
-                          <img src="" alt="avatar 3" className="input-avatar" />
+                            <CircleImage email= {auth.currentUser ? auth.currentUser.email : ''} />
+                          {/* <img src="" alt="avatar 3" className="input-avatar" /> */}
                           <input
                             type="text"
                             className="form-control form-control-lg"
@@ -203,11 +192,16 @@ const OnlineUsersList = () => {
                             value={chatInput}
                             onChange={handleChatInput}
                           />
-                          <a className="ms-1 text-muted" href="#!"></a>
-                          <a className="ms-3 text-muted" href="#!"></a>
-                          <a className="ms-3" onClick={handleSendMessage}>
-                            Send
-                          </a>
+                           <a className="ms-1 text-muted" href="#!">
+                              <FiPaperclip />
+                            </a>
+                            <a className="ms-3 text-muted" href="#!">
+                              <FaRegSmile />
+                            </a>
+                            <a className="ms-3" onClick={handleSendMessage}>
+                              <FaPaperPlane />
+                            </a>
+                         
                         </div>
                       </div>
                  
