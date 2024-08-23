@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { auth, firestore } from '../Firebase';
-import { addDoc, collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
+import { Nav, UserChatTable } from './nav';
+import { Searchs } from './search';
 
 const OnlineUsersList = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -11,47 +13,71 @@ const OnlineUsersList = () => {
   const [chatInput, setChatInput] = useState('');
   const senderId = auth.currentUser?.uid;
 
+  const fetchUsers = async (auth, setOnlineUsers, firestore) => {
+    try {
+      const userRef = collection(firestore, 'users');
+      const q = query(userRef, where('email', '!=', auth.currentUser.email));
+      const usersnapshot = await getDocs(q);
+      const userdata = usersnapshot.docs.map((doc) => ({ uid: doc.id, ...doc.data() }));
+      setOnlineUsers(userdata);
+    } catch (error) {
+      // setError(error.message);
+      console.log(error)
+    }
+  };
+
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
-        const fetchUsers = async () => {
-          try {
-            const userRef = collection(firestore, 'users');
-            const q = query(userRef, where('email', '!=', auth.currentUser.email));
-            const usersnapshot = await getDocs(q);
-            const userdata = usersnapshot.docs.map((doc) => ({ uid: doc.id, ...doc.data() }));
-            setOnlineUsers(userdata);
-          } catch (error) {
-            setError(error.message);
-          }
-        };
-        fetchUsers();
+       
+        fetchUsers(auth, setOnlineUsers, firestore);
       } else {
         setOnlineUsers([]);
       }
     });
-    return unsubscribe;
-  }, []);
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+   
+  }, [auth, firestore, setOnlineUsers]);
+
+  const fetchChatMessages = async (senderId, selectedUser) => {
+    try {
+      const messageQuery = query(
+        collection(firestore, 'messages'),
+        where('receiverId', 'in', [selectedUser.uid, senderId]),
+        where('senderId', 'in', [selectedUser.uid, senderId])
+      );
+      // const messageSnapshot = await getDocs(messageQuery);
+      const unsubscribe = onSnapshot(messageQuery,(snapshot) => {
+        const messagesData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const sortedMessages = messagesData.sort((a, b) => a.timestamp - b.timestamp);
+        setMessages(sortedMessages);
+      })
+      return unsubscribe;
+    }
+    
+    catch (error) {
+      console.error('Error fetching chat messages:', error);
+    }
+    
+  };
+  
+
 
   useEffect(() => {
     if (selectedUser) {
-      const fetchChatMessages = async () => {
-        try {
-          const messageQuery = query(
-            collection(firestore, 'messages'),
-            where('receiverId', 'in', [selectedUser.uid, senderId]),
-            where('senderId', 'in', [selectedUser.uid, senderId])
-          );
-          const messageSnapshot = await getDocs(messageQuery);
-          const messagesData = messageSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          const sortedMessages = messagesData.sort((a, b) => a.timestamp - b.timestamp);
-          setMessages(sortedMessages);
-        } catch (error) {
-          console.error('Error fetching chat messages:', error);
-        }
-      };
-      fetchChatMessages();
+     const unsubscribe =  fetchChatMessages(senderId, selectedUser);
+     return () => {
+      if (unsubscribe && typeof unsubscribe === 'function') {
+        unsubscribe(); // Call unsubscribe during cleanup
+      }
+    };
     }
+    
   }, [selectedUser, senderId]);
 
   const handleChatInput = (e) => {
@@ -80,11 +106,13 @@ const OnlineUsersList = () => {
     }
   };
   const formatDate = (timestamp) => {
+    if (!timestamp) return '';
     const date = timestamp.toDate();
     return date.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
   const formatTime = (timestamp) => {
+    if (!timestamp) return '';
     const time = timestamp.toDate();
     return time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
   };
@@ -101,39 +129,20 @@ const OnlineUsersList = () => {
             <div className="card mb-5">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
-                    <div className="p-3">
-                      <h1>Online Users</h1>
-                      <select
-                        value={selectedUser?.uid || ''}
-                        onChange={(e) => {
-                          const selected = onlineUsers.find((user) => user.uid === e.target.value);
-                          setSelectedUser(selected);
-                        }}
-                      >
-                        <option value="" disabled>Select a user</option>
-                        {onlineUsers.map((user) => (
-                          <option key={user.uid} value={user.uid}>
-                            {user.email}
-                          </option>
-                        ))}
-                      </select>
-                      <ul>
-                        {onlineUsers.map((user) => (
-                          <li key={user.uid} onClick={() => setSelectedUser(user)}>
-                            <div className="online-user">
-                              <div className="circle" />
-                              <p>{user.email}</p>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0 border">
+                    <Nav />
+                    <Searchs />
+                    <UserChatTable 
+                    onlineUsers={onlineUsers}
+                    setSelectedUser={setSelectedUser}
+                    messages={messages}
+                    senderId={senderId}
+                    />
                   </div>
-                  <div className="col-md-6 col-lg-7 col-xl-8">
-                    {selectedUser && (
+                  <div className="col-md-6 col-lg-7 col-xl-8 border">
+                   
                       <div>
-                        <h2>Chat with {selectedUser.name || selectedUser.email}</h2>
+                        <h6 className='p-2'>{ selectedUser ? selectedUser.name || selectedUser.email : ''}</h6>
                        
 
 <div className="chat-messages"><ul className='message-list'>
@@ -201,7 +210,7 @@ const OnlineUsersList = () => {
                           </a>
                         </div>
                       </div>
-                    )}
+                 
                     
                   </div>
                 </div>
