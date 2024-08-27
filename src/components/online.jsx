@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { auth, firestore } from '../Firebase';
 import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
-import { CircleImage, Nav, UserChatTable } from './nav';
+import { CircleImage, Nav, UserChatTable, UserImage } from './nav';
 import { Searchs } from './search';
 import { FiPaperclip } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
@@ -126,17 +126,17 @@ const OnlineUsersList = () => {
   let lastDate = null;
   return (
     <div>
-    <p>Logged in as {auth.currentUser ? auth.currentUser.email : ''}</p>
-  
     <section className="chat-section">
-      <div className="container py-5">
+      <div className="container py-3">
         <div className="row">
           <div className="col-md-12">
             <div className="card mb-5">
+            </div>
+            <div className="card" id="chat3">
               <div className="card-body">
-                <div className="row">
-                  <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0 border">
-                    <Nav />
+                <div className="row" >
+                  <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
+                    {/* <Nav /> */}
                     <Searchs />
                     <UserChatTable 
                     onlineUsers={onlineUsers}
@@ -150,13 +150,15 @@ const OnlineUsersList = () => {
                     
                     />
                   </div>
-                  <div className="col-md-6 col-lg-7 col-xl-8 border">
+
+                  <div className="col-md-6 col-lg-7 col-xl-8 ">
                    
                       <div>
                         <h6 className='p-2'>{ selectedUser ? selectedUser.name || selectedUser.email : ''}</h6>
                        
 
-<div className="chat-messages"><ul className='message-list'>
+<div className="chat-messages">
+  <ul className='message-list'>
 {messages.map((msg, index) => {
                 const messageDate = formatDate(msg.timestamp);
                 const showDate = lastDate !== messageDate;
@@ -182,8 +184,8 @@ const OnlineUsersList = () => {
 
 
  <div className="message-input">
-                            <CircleImage email= {auth.currentUser ? auth.currentUser.email : ''} />
-                          {/* <img src="" alt="avatar 3" className="input-avatar" /> */}
+                            <UserImage email= {auth.currentUser ? auth.currentUser.email : ''} className={`input-avatar`} />
+                         
                           <input
                             type="text"
                             className="form-control form-control-lg"
@@ -209,7 +211,8 @@ const OnlineUsersList = () => {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+            
           </div>
         </div>
       </div>

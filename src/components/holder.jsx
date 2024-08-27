@@ -117,7 +117,7 @@ const filterSearch = chatUsers.filter(({name}) => {
         <div className="row">
           <div className="col-md-12">
             <div className='card mb-5'>
-            <OnlineUsersList />
+            {/* <OnlineUsersList /> */}
             </div>
     <div className="card" id="chat3">
           <div className="card-body">
@@ -127,7 +127,7 @@ const filterSearch = chatUsers.filter(({name}) => {
                 <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
         <div className="p-3">
                      <Search  searchQuery={searchQuery} onSearchChange={handleSearchChange} />
-                      <div className="user-list" >
+                      <div className="user-lis" >
                         {searchQuery ?(
                           <ul className="list-unstyled mb-0" >
                           {filterSearch.map((user, index) => (

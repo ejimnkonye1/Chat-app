@@ -74,15 +74,19 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser, messages, showEmai
                             ...user,
                             lastMessage: lastMessage.content,
                             lastMessageType: lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                            lastMessageStatus: lastMessage.status
-                        });
+                            lastMessageStatus: lastMessage.status,
+                            lastMessagedate: lastMessage.timestamp,
+                            lastMessageCount: userMessages.filter(msg => msg.status === false && msg.receiverId === msg.receiverId ).length,
+                        }); 
                     } else {
                         // Update existing user with new last message
                         updatedUsersWithMessages[existingUserIndex] = {
                             ...updatedUsersWithMessages[existingUserIndex],
                             lastMessage: lastMessage.content,
+                            lastMessageCount: userMessages.filter(msg => msg.status === false && msg.receiverId === msg.receiverId ).length,
                             lastMessageType: lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                            lastMessageStatus: lastMessage.status
+                            lastMessageStatus: lastMessage.status,
+                            lastMessagedate: lastMessage.timestamp
                         };
                     }
                 }
@@ -91,9 +95,12 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser, messages, showEmai
             return updatedUsersWithMessages;
         });
     }, [onlineUsers, messages]);
-
+    const formatTime = (date) => {
+        if (!date) return '';
+        return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      };
     return (
-        <div>
+        <div className="">
             <Table>
                 <TableHead>
                     <TableRow>
@@ -101,26 +108,42 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser, messages, showEmai
                         <TableCell onClick={handleToggleEmail} style={{ cursor: 'pointer' }}>User List</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                
+                <TableBody className="" sx={{ maxHeight: 400, overflowY: 'auto' }}  >
+ 
+ 
                     {showChat && (
                         usersWithMessages.map((user) => (
                             <TableRow key={user.uid} onClick={() => { 
                                 setSelectedUser(user); 
                                 markMessageAsRead(user); // Mark messages as read
-                            }}>
+                            }} sx={{ maxHeight: 400, overflowY: 'auto' }}>
                                 <TableCell className={user.lastMessageType}>
-                                    <div style={emailstyles.inlineContainer}>
-                                        <CircleImage email={user.email} />
-                                        <div className="pt-1" style={emailstyles.emailContainer}>
-                                            <span className="fw-bold mb-0" style={emailstyles.emailText2}>{user.email}</span>
-                                            <p className="small text-muted">{user.lastMessage}</p>
-                                            {user.lastMessageStatus === false ? (
-                                                <span className={`badge bg-warning badge-dot`}>ok</span>
-                                            ) : (
-                                                <div>Read</div>
-                                            )}
-                                        </div>
-                                    </div>
+                                <div style={emailstyles.inlineContainer}>
+  <CircleImage email={user.email} />
+  <div className="pt-1" style={emailstyles.emailContainer}>
+    <div style={{ display: 'flex', justifyContent: 'space-between',position:'relative' }}>
+      <span className="fw-bold mb-0" style={emailstyles.emailText2}>{user.email}</span>
+      <div style={emailstyles.date}>
+      <span>{formatTime(user.lastMessagedate.toDate())}</span>
+      
+      </div>
+     
+    
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <p className="small text-muted">{user.lastMessage}</p>
+    <div style={emailstyles.date}>
+    {/* {user.lastMessageType === 'receiving' && user.lastMessageCount > 0 ? (
+  <span className={`badge bg-warning badge-dot`}>{user.lastMessageCount}</span>
+) : (
+  <div>Read</div>
+)} */}
+</div>
+    </div>
+    
+  </div>
+</div>
                                 </TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
@@ -131,40 +154,49 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser, messages, showEmai
                         onlineUsers.map((user) => (
                             <TableRow key={user.uid} onClick={() => setSelectedUser(user)}>
                                 <TableCell>
-                                    <div style={emailstyles.inlineContainer}>
+                                    <div className="user">
+                                    <div style={emailstyles.inlineContainer} className="">
                                         <CircleImage email={user.email} />
                                         <span style={emailstyles.emailText}>{user.email}</span>
                                     </div>
+                                   
+                                    </div>
+                                 
                                 </TableCell>                                       
                                 <TableCell></TableCell>
                             </TableRow>
                         ))
                     )}
+                    
+                    
                 </TableBody>
+               
+
             </Table>
         </div>
     );
 };
 
-const emailstyles ={
-    inlineContainer:{
-        display:'inline-flex'
-       
-
+const emailstyles = {
+    inlineContainer: {
+      display: 'inline-flex'
     },
-    emailText:{
-        padding:'10px'
+    emailText: {
+      padding: '10px'
     },
-    emailText2:{
-        padding:''
+    emailText2: {
+      padding: ''
     },
-    emailContainer:{
-        display:'flex',
-         flexDirection: 'column',
-         paddingLeft:'10px'
+    emailContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      paddingLeft: '10px'
+    },
+    date:{
+        position :'relative',
+        left:'40%'
     }
-}
-
+  }
 const styles = {
     circle: {
       width: '40px',
@@ -177,6 +209,17 @@ const styles = {
       fontSize: '18px',
       fontWeight: 'bold',
     },
+    circles:{
+        width: '48px',
+        height: '40px',
+        borderRadius: '50%',
+        color: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '18px',
+        fontWeight: 'bold',
+    }
   };
 
     // Utility function to generate a random color
@@ -204,6 +247,21 @@ const styles = {
         </div>
       );
     }
+    export const UserImage = ({ email }) => {
+   
+
+        // Extract the first and second letters from the email
+        const letters = email.substring(0, 2).toUpperCase();
+      
+        // Generate a random background color
+        const backgroundColor = 'black';
+      
+        return (
+          <div style={{ ...styles.circles, backgroundColor }}>
+            {letters}
+          </div>
+        );
+      }
     
    
     

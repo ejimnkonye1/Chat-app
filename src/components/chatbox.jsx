@@ -5,7 +5,7 @@ import OnlineUsersList from "./online"
 export const ChatBox = () => {
     return(
         <div>
- <Head />
+ {/* <Head /> */}
  {/* <Holder /> */}
  <OnlineUsersList />
         </div>
