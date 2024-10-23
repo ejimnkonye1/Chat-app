@@ -25,6 +25,11 @@
   .message-avatar {
     width: 45px;
     height: 100%;
+    /* display: none; */
+  }
+  .message-avatar-start{
+    width: 45px;
+    height: 100%;
   }
   
   .message-input {

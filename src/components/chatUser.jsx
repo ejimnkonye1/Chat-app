@@ -8,6 +8,7 @@ const chatUsers = [
       badgeClass: 'bg-success',
       name: 'Marie Horwitz',
       message: 'Hello, Are you there?',
+      
       time: 'Just now',
       unreadCount: 3
     },
@@ -15,7 +16,7 @@ const chatUsers = [
       imgSrc: img1,
       badgeClass: 'bg-warning',
       name: 'Alexa Chung',
-      message: 'Lorem ipsum dolor sit.',
+      message: 'Long time no see bro.',
       time: '5 mins ago',
       unreadCount: 2
     },
@@ -23,28 +24,28 @@ const chatUsers = [
       imgSrc: img3,
       badgeClass: 'bg-success',
       name: 'Danny McChain',
-      message: 'Lorem ipsum dolor sit.',
+      message: 'i want to learn coding.',
       time: 'Yesterday'
     },
     {
       imgSrc: img4,
       badgeClass: 'bg-danger',
       name: 'Ashley Olsen',
-      message: 'Lorem ipsum dolor sit.',
+      message: 'Billie awfar that way.',
       time: 'Yesterday'
     },
     {
       imgSrc: img1,
       badgeClass: 'bg-warning',
       name: 'Kate Moss',
-      message: 'Lorem ipsum dolor sit.',
+      message: 'Guy u go school today.',
       time: 'Yesterday'
     },
     {
       imgSrc: img2,
       badgeClass: 'bg-success',
       name: 'Ben Smith',
-      message: 'Lorem ipsum dolor sit.',
+      message: 'Omo i dey broke ooo.',
       time: 'Yesterday'
     }
   ];

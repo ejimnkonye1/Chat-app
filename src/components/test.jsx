@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import chatUsers from './chatUser';
 import chatMessages from './chatMes';
@@ -15,7 +13,7 @@ import { setChat } from '../action';
 import { setImg } from '../action';
 import Search from './search';
 import { io } from 'socket.io-client';
-import OnlineUsersList from './online';
+
 const Holder = () => {
 
   // const socket = io('http://localhost:9000')
@@ -34,19 +32,19 @@ const Holder = () => {
         color: darkmode ? '#FFF' : '#000',
         transition: 'all 0.3s',
     }
-    // useEffect(() => {
-    //   socket.on('connect', () => {
-    //     console.log('Connected to socket server');
-    //   });
-    //   socket.on('chat', (message) => {
-    //     setReceivedMessages1((prevMes) => [...prevMes, message])
-    //   });
+    useEffect(() => {
+      socket.on('connect', () => {
+        console.log('Connected to socket server');
+      });
+      socket.on('chat', (message) => {
+        setReceivedMessages1((prevMes) => [...prevMes, message])
+      });
   
 
-    //   return () => {
-    //     socket.off('2message')
-    //   }
-    // }, []);
+      return () => {
+        socket.off('2message')
+      }
+    }, []);
 
 const handleinputChange = (e) => {
   
@@ -116,18 +114,14 @@ const filterSearch = chatUsers.filter(({name}) => {
       <div className="container py-5">
         <div className="row">
           <div className="col-md-12">
-            <div className='card mb-5'>
-            {/* <OnlineUsersList /> */}
-            </div>
     <div className="card" id="chat3">
           <div className="card-body">
      <div className="row">
-      
 
                 <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
         <div className="p-3">
                      <Search  searchQuery={searchQuery} onSearchChange={handleSearchChange} />
-                      <div className="user-lis" >
+                      <div className="user-list" >
                         {searchQuery ?(
                           <ul className="list-unstyled mb-0" >
                           {filterSearch.map((user, index) => (
