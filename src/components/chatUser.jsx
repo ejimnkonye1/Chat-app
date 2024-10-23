@@ -8,6 +8,7 @@ const chatUsers = [
       badgeClass: 'bg-success',
       name: 'Marie Horwitz',
       message: 'Hello, Are you there?',
+      
       time: 'Just now',
       unreadCount: 3
     },
