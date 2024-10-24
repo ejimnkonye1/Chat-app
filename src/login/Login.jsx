@@ -9,17 +9,14 @@ import 'boxicons/css/boxicons.min.css';
 import { auth } from '../Firebase';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-
 import LoginForm from '../forms/loginform';
 import RegisterForm from '../forms/registerform';
 import RequestPasswordform from '../forms/requestPassword';
 const LoginRegisterForm = () => {
-    // const { userLoggedIn } = useAuth();
+
 
     const [email, setEmail] = useState('')
     const [ password, setPassword] = useState('')
-
-
 
      const [formData, setFormData] = useState({
         username: '',
