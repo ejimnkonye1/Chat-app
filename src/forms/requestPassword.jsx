@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 
-import React, { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../Firebase'
 
@@ -31,38 +32,31 @@ console.log(`this is error: ${erromes}`)
   }, 5000);
   return (
     <div>
-       {erromes && <p className='text-danger'>{erromes}</p>}
-       {success && <p className='text-danger'>We sent a link to reset your password to your email</p>}
-      <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
-          <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]">
+    {erromes && <p className='text-danger'>{erromes}</p>}
+    {success && <p className='text-danger'>We sent a link to reset your password to your email</p>}
+    <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
+        <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
             <i className='bx bxs-envelope'></i>
-          </span>
-         
-          <input
+        </span>
+        <input
             type="email"
             name="email"
             required
-            className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${resetEmail ? 'cf-not-empty' : ''}`}
+            className={`bg-transparent w-full h-full text-lg font-semibold text-gray-900 pl-1.5 pr-7.5 pb-5 ${resetEmail ? 'not-empty' : ''}`}
             value={resetEmail}
             onChange={handlemailChange}
-          />
-          <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">
+        />
+        <label className="absolute left-1.5 top-1/2 transform -translate-y-1/2 text-gray-900 text-lg font-medium transition-all duration-450 pointer-events-none">
             Email
-          </label>
-          
-         
-        </div>
-        <div className="cf-check cf-flex cf-justify-between cf-text-gray-900 cf-text-sm cf-font-medium cf-mt-[-14px] cf-mb-4">
-          
-         
-          <a href="#" className="cf-hover:underline cf-text-gray-900"onClick={() => setfogetPage(false)} >Login</a>
-         
-        </div>
-       
-        <button type="submit" onClick={handleresetpassword} className="cf-bg-gray-900 cf-w-full cf-h-[43px] cf-rounded-lg cf-font-semibold cf-text-white cf-cursor-pointer">
-          Reset password
-        </button>
+        </label>
     </div>
+    <div className="check flex justify-between text-gray-900 text-sm font-medium mt-[-14px] mb-4">
+        <a href="#" className="hover:underline text-gray-900" onClick={() => setfogetPage(false)}>Login</a>
+    </div>
+    <button type="submit" onClick={handleresetpassword} className="bg-gray-900 w-full h-[43px] rounded-lg font-semibold text-white cursor-pointer">
+        Reset password
+    </button>
+</div>
   )
 }
 
