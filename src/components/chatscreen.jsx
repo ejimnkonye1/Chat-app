@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { auth, firestore } from '../Firebase';
 import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
-import { CircleImage, Nav, UserChatTable, UserImage } from './nav';
+import {  UserChatTable, } from './nav';
 import { Searchs } from './search';
 import { FiPaperclip } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import { FaPaperPlane } from "react-icons/fa";
-const OnlineUsersList = () => {
+export  const ChatScreen = () => {
   const [showEmails, setShowEmails] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -126,101 +127,100 @@ const OnlineUsersList = () => {
   let lastDate = null;
   return (
     <div>
-    <section className="chat-section">
-      <div className="container py-3">
-        <div className="row">
-          <div className="col-md-12">
-            <div className="card mb-5">
+   <section className="chat-section">
+  <div className="container mx-auto py-3">
+    <div className="flex flex-col">
+      <div className="mb-5"></div>
+      <div className="bg-white shadow-lg rounded-lg" id="chat3">
+        <div className="p-4">
+          <div className="flex flex-wrap">
+            <div className="w-full md:w-1/2 lg:w-5/12 xl:w-1/3 mb-4 md:mb-0">
+              <Searchs />
+              <UserChatTable
+                onlineUsers={onlineUsers}
+                setSelectedUser={setSelectedUser}
+                messages={messages}
+                senderId={senderId}
+                showEmails={showEmails}
+                setShowEmails={setShowEmails}
+                showChat={showChat}
+                setShowChat={setShowChat}
+              />
             </div>
-            <div className="card" id="chat3">
-              <div className="card-body">
-                <div className="row" >
-                  <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
-                    {/* <Nav /> */}
-                    <Searchs />
-                    <UserChatTable 
-                    onlineUsers={onlineUsers}
-                    setSelectedUser={setSelectedUser}
-                    messages={messages}
-                    senderId={senderId}
-                    showEmails={showEmails}
-                    setShowEmails={setShowEmails}
-                    showChat={showChat}
-                    setShowChat={setShowChat}
-                    
-                    />
-                  </div>
-
-                  <div className="col-md-6 col-lg-7 col-xl-8 ">
-                   
-                      <div>
-                        <h6 className='p-2'>{ selectedUser ? selectedUser.name || selectedUser.email : ''}</h6>
-                       
-
-<div className="chat-messages">
-  <ul className='message-list'>
-{messages.map((msg, index) => {
-                const messageDate = formatDate(msg.timestamp);
-                const showDate = lastDate !== messageDate;
-                lastDate = messageDate;
-                return (
-                  <div key={index}>
-                    {showDate && <div className={`date-divider ${''}`}>{messageDate}</div>}
-                    <li
-                      className={`message-item ${
-                        msg.senderId === senderId ? 'sent' : 'received'
-                      }`}
-                    >
-                      <span>{msg.content}</span>
-                      <small>{formatTime(msg.timestamp)}</small>
-                    </li>
-                  </div>
-                );
-              _})}
-            </ul>
-
-
-</div>
-
-
- <div className="message-input">
-                            <UserImage email= {auth.currentUser ? auth.currentUser.email : ''} className={`input-avatar`} />
-                         
-                          <input
-                            type="text"
-                            className="form-control form-control-lg"
-                            id="exampleFormControlInput2"
-                            placeholder="Type message"
-                            value={chatInput}
-                            onChange={handleChatInput}
-                          />
-                           <a className="ms-1 text-muted" href="#!">
-                              <FiPaperclip />
-                            </a>
-                            <a className="ms-3 text-muted" href="#!">
-                              <FaRegSmile />
-                            </a>
-                            <a className="ms-3" onClick={handleSendMessage}>
-                              <FaPaperPlane />
-                            </a>
-                         
+        
+            <div className="w-full md:w-1/2 lg:w-7/12 xl:w-2/3">
+              <div>
+                <h6 className="p-2">
+                  {selectedUser ? selectedUser.name || selectedUser.email : ""}
+                </h6>
+                <div className="chat-messages overflow-y-auto h-64">
+                  <ul className="space-y-2 message-list">
+                    {messages.map((msg, index) => {
+                      const messageDate = formatDate(msg.timestamp);
+                      const showDate = lastDate !== messageDate;
+                      lastDate = messageDate;
+                      return (
+                        <div key={index}>
+                          {showDate && (
+                            <div className="text-center text-sm text-gray-500 my-2">
+                              {messageDate}
+                            </div>
+                          )}
+                          <li
+                            className={`message-item ${
+                              msg.senderId === senderId
+                                ? " sent"
+                                : " received"
+                            }`}
+                          >
+                            <span>{msg.content}</span>
+                            <small className="block text-xs text-gray-600 mt-1">
+                              {formatTime(msg.timestamp)}
+                            </small>
+                          </li>
                         </div>
-                      </div>
-                 
-                    
-                  </div>
+                      );
+                    })}
+                  </ul>
+                </div>
+                <div className="message-input flex items-center mt-4">
+                  {/* <UserImage
+                    email={auth.currentUser ? auth.currentUser.email : ""}
+                    className="w-10 h-10 rounded-full mr-3"
+                  /> */}
+                  <input
+                    type="text"
+                    className="form-control form-control-lg border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Type message"
+                    value={chatInput}
+                    onChange={handleChatInput}
+                  />
+                  <a className="ml-3 text-gray-500 hover:text-gray-700" href="#!">
+                    <FiPaperclip />
+                  </a>
+                  <a className="ml-3 text-gray-500 hover:text-gray-700" href="#!">
+                    <FaRegSmile />
+                  </a>
+                  <a
+                    className="ml-3 text-blue-500 hover:text-blue-700"
+                    onClick={handleSendMessage}
+                  >
+                    <FaPaperPlane />
+                  </a>
                 </div>
               </div>
-              </div>
-            
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
 
     
   </div>
   );
 };
 
-export default OnlineUsersList;
+

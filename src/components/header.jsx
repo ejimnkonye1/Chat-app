@@ -1,4 +1,4 @@
-
+/* eslint-disable react/prop-types */
 import '../css/header.css'
 import { CiDark } from "react-icons/ci";
 import { setMode } from '../action';
@@ -17,11 +17,7 @@ const dispatch = useDispatch();
     const lightMode = () => {
         dispatch(setMode(false));
     }
-    const style = {
-        backgroundColor : darkMode ? '#000' : "#fff",
-        color: darkMode ? '#FFF' : '#000',
-        transition: 'all 0.4s',
-    }
+
    
     return(
       <nav className={`navbar navbar-expand-lg ${darkMode ? "bg-dark" : "bg-body-tertiary"}`}>
