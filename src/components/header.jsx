@@ -1,4 +1,4 @@
-import React from 'react';
+
 import '../css/header.css'
 import { CiDark } from "react-icons/ci";
 import { setMode } from '../action';
@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { CiLight } from "react-icons/ci";
 import { IoMdLogOut } from "react-icons/io";
-// import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const Head = () => {
   const username = useSelector((state) => state.username);
