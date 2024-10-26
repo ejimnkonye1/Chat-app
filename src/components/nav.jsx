@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { useState, useEffect } from "react";
 
 export const UserChatTable = ({ onlineUsers, setSelectedUser , messages }) => {
