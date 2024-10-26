@@ -153,7 +153,7 @@ export  const ChatScreen = () => {
                 <h6 className="p-2">
                   {selectedUser ? selectedUser.name || selectedUser.email : ""}
                 </h6>
-                <div className="chat-messages overflow-y-auto h-64">
+                <div className="chat-messages overflow-y-auto h-[400px]">
                   <ul className="space-y-2 message-list">
                     {messages.map((msg, index) => {
                       const messageDate = formatDate(msg.timestamp);
