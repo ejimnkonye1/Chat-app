@@ -5,6 +5,13 @@ import { useState, useEffect } from "react";
 
 export const UserChatTable = ({ onlineUsers, setSelectedUser , messages }) => {
     const [usersWithMessages, setUsersWithMessages] = useState([]);
+    const [showEmails, setShowEmails] = useState(false);
+    const [showChat, setShowChat] = useState(false);
+
+    const handleToggleChat = () => {
+        setShowEmails(false);
+        setShowChat(true);
+    };
     useEffect(() => {
         // Start with the existing state and make a copy to update
         setUsersWithMessages(prevUsersWithMessages => {
@@ -81,6 +88,7 @@ export const UserList = ({ onlineUsers, usersWithMessages, setSelectedUser  }) =
                 .map((user) => (
                     <TableRow key={user.uid} onClick={() => setSelectedUser (user)}>
                         <TableCell>{user.email}</TableCell>
+                        console.log(`username:${user.username}`)
                         <TableCell></TableCell>
                     </TableRow>
                 ))}
