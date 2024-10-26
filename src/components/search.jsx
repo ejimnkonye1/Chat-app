@@ -15,7 +15,7 @@ export const Searchs = () => {
                 {isOpen ? <HiX /> : <HiOutlineMenu />}
       </button>
       {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-20">
+                <div className="absolute left-0 mt-10 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-20">
                     <ul className="py-1">
                         <li>
                             <a href="#settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>

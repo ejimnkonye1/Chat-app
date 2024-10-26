@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { auth, firestore } from '../Firebase';
 import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
-import {  UserChatTable, } from './nav';
+import {  Head, UserChat,  } from './nav';
 import { Searchs } from './search';
 import { FiPaperclip } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
@@ -136,7 +136,11 @@ export  const ChatScreen = () => {
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 lg:w-5/12 xl:w-1/3 mb-4 md:mb-0">
               <Searchs />
-              <UserChatTable
+              <Head 
+                onlineUsers={onlineUsers}
+                setSelectedUser={setSelectedUser}
+              />
+              <UserChat
                 onlineUsers={onlineUsers}
                 setSelectedUser={setSelectedUser}
                 messages={messages}
@@ -146,6 +150,8 @@ export  const ChatScreen = () => {
                 showChat={showChat}
                 setShowChat={setShowChat}
               />
+             
+        
             </div>
         
             <div className="w-full md:w-1/2 lg:w-7/12 xl:w-2/3">
