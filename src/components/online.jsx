@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { auth, firestore } from '../Firebase';
 import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
-import { Nav, UserChatTable } from './nav';
+import { UserChatTable } from './nav';
 import { Searchs } from './search';
 
 const OnlineUsersList = () => {
@@ -119,18 +119,17 @@ const OnlineUsersList = () => {
 
   let lastDate = null;
   return (
-    <div>
+    <div className='cf-bg-nightowl-background'>
     <p>Logged in as {auth.currentUser ? auth.currentUser.email : ''}</p>
   
-    <section className="chat-section">
-      <div className="container py-5">
+    <section className="chat-section ">
+      <div className="container py-5 ">
         <div className="row">
           <div className="col-md-12">
             <div className="card mb-5">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0 border">
-                    <Nav />
+                  <div className=" col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0 border cf-bg-nightowl-chatBackground cf-pt-4 cf-text-nightowl-text">
                     <Searchs />
                     <UserChatTable 
                     onlineUsers={onlineUsers}
@@ -139,7 +138,7 @@ const OnlineUsersList = () => {
                     senderId={senderId}
                     />
                   </div>
-                  <div className="col-md-6 col-lg-7 col-xl-8 border">
+                  <div className="col-md-6 col-lg-7 col-xl-8 border cf-bg-nightowl-chatBackground cf-text-nightowl-text">
                    
                       <div>
                         <h6 className='p-2'>{ selectedUser ? selectedUser.name || selectedUser.email : ''}</h6>
@@ -163,7 +162,7 @@ const OnlineUsersList = () => {
                     </li>
                   </div>
                 );
-              _})}
+              })}
             </ul>
 
   {/* {messages.map((message, index) => (

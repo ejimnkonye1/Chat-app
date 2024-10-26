@@ -2,16 +2,6 @@ import { HiOutlinePencilAlt } from "react-icons/hi";
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useState, useEffect } from "react";
 
-export const Nav = () => {
-    return (
-        <nav className="navbar">
-            <a className="navbar-brand" href="#">Chat</a>
-            <div className="d-flex justify-content-end">
-                <HiOutlinePencilAlt />
-            </div>
-        </nav>
-    );
-};
 
 export const UserChatTable = ({ onlineUsers, setSelectedUser, messages }) => {
     const [showEmails, setShowEmails] = useState(false);
@@ -65,11 +55,14 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser, messages }) => {
     }, [onlineUsers, messages]);
     return (
         <div>
+            <a className="navbar-brand" href="#">Chat</a>
+            <div className="d-flex justify-content-end cf-text-nightowl-text">
+                <HiOutlinePencilAlt  onClick={handleToggleChat} style={{ cursor: 'pointer' }}/>
+            </div>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell onClick={handleToggleEmail} style={{ cursor: 'pointer' }}>User Chats</TableCell>
-                        <TableCell onClick={handleToggleChat} style={{ cursor: 'pointer' }}>User List</TableCell>
+                        <TableCell className="cf-text-nightowl-userText" onClick={handleToggleEmail} style={{ cursor: 'pointer' }}>User Chats</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -77,9 +70,9 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser, messages }) => {
                         usersWithMessages.map((user) => (
                             <TableRow key={user.uid} onClick={() => setSelectedUser(user)}>
                                 <TableCell className={user.lastMessageType}>
-                                    <span>{user.email}</span>
+                                    <span className="cf-text-nightowl-userText">{user.email}</span>
                                     <br />
-                                    <span>{user.lastMessage}</span>
+                                    <span className="cf-text-nightowl-userText">{user.lastMessage}</span>
                                 </TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
@@ -89,13 +82,13 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser, messages }) => {
                     {showChat && (
                         onlineUsers.map((user) => (
                             <TableRow key={user.uid} onClick={() => setSelectedUser(user)}>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell className="cf-text-nightowl-userText">{user.email}</TableCell>
                             </TableRow>
                         ))
                     )}
                 </TableBody>
             </Table>
         </div>
+        
     );
 };
