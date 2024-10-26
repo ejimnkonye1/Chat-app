@@ -1,13 +1,9 @@
-import { Head } from "./header"
-import Holder from "./holder"
-import OnlineUsersList from "./online"
+import { ChatScreen } from "./chatscreen"
 
 export const ChatBox = () => {
     return(
         <div>
- <Head />
- {/* <Holder /> */}
- <OnlineUsersList />
+ <ChatScreen />
         </div>
        
     )

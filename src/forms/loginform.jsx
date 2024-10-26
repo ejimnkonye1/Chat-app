@@ -3,7 +3,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../login/Login.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, firestore} from '../Firebase';
 
@@ -55,63 +54,55 @@ const dispatch = useDispatch()
 
   return (
     <div>
-    
-        <form action="" onSubmit={handleUserSignIn}>
-            {error && <p className='text-danger'>{error}</p>}
-        <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
-      
-          <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]">
-            <i className='bx bxs-envelope'></i>
-          </span>
-          
-          <input
-            type="email"
-            name="email"
-            required
-            className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${email ? 'cf-not-empty' : ''}`}
-            value={email}
-            onChange={handleEmail}
-          />
-          <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">
-            Email
-          </label>
+    <form action="" onSubmit={handleUserSignIn}>
+        {error && <p className='text-danger'>{error}</p>}
+        <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
+            <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
+                <i className='bx bxs-envelope'></i>
+            </span>
+            <input
+                type="email"
+                name="email"
+                required
+                className={`bg-transparent w-full h-full text-lg font-semibold text-gray-900 pl-1.5 pr-7.5 pb-5 ${email ? 'not-empty' : ''}`}
+                value={email}
+                onChange={handleEmail}
+            />
+            <label className="absolute left-1.5 top-1/2 transform -translate-y-1/2 text-gray-900 text-lg font-medium transition-all duration-450 pointer-events-none">
+                Email
+            </label>
         </div>
-        <div className="cf-input-box cf-relative cf-h-13 cf-w-full cf-border-b-2 cf-border-gray-900 cf-mt-8 cf-mb-8">
-          <span className="cf-icon cf-absolute cf-right-2.5 cf-text-lg cf-text-gray-900 cf-leading-[55px]">
-            <i className='bx bxs-lock-alt'></i>
-          </span>
-          <input
-            type="password"
-            name="password"
-            required
-            className={`cf-bg-transparent cf-w-full cf-h-full cf-text-lg cf-font-semibold cf-text-gray-900 cf-pl-1.5 cf-pr-7.5 cf-pb-5 ${password ? 'cf-not-empty' : ''}`}
-            value={password}
-            onChange={handlePassword}
-          />
-          <label className="cf-absolute cf-left-1.5 cf-top-1/2 cf-transform cf--translate-y-1/2 cf-text-gray-900 cf-text-lg cf-font-medium cf-transition-all cf-duration-450 cf-pointer-events-none">
-            Password
-          </label>
+        <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
+            <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
+                <i className='bx bxs-lock-alt'></i>
+            </span>
+            <input
+                type="password"
+                name="password"
+                required
+                className={`bg-transparent w-full h-full text-lg font-semibold text-gray-900 pl-1.5 pr-7.5 pb-5 ${password ? 'not-empty' : ''}`}
+                value={password}
+                onChange={handlePassword}
+            />
+            <label className="absolute left-1.5 top-1/2 transform -translate-y-1/2 text-gray-900 text-lg font-medium transition-all duration-450 pointer-events-none">
+                Password
+            </label>
         </div>
-        <div className="cf-check cf-flex cf-justify-between cf-text-gray-900 cf-text-sm cf-font-medium cf-mt-[-14px] cf-mb-4">
-          <label className="cf-flex cf-items-center">
-            <input type="checkbox" className="cf-mr-1.5 cf-accent-gray-900" />
-            Remember me
-          </label>
-         
-          <a href="#" className="cf-hover:underline"onClick={() => setfogetPage(true)} >Forget Password</a>
-         
+        <div className="check flex justify-between text-gray-900 text-sm font-medium mt-[-14px] mb-4">
+            <label className="flex items-center">
+                <input type="checkbox" className="mr-1.5 accent-gray-900" />
+                Remember me
+            </label>
+            <a href="#" className="hover:underline" onClick={() => setfogetPage(true)}>Forget Password</a>
         </div>
-        <button type="submit" className="cf-bg-gray-900 cf-w-full cf-h-[43px] cf-rounded-lg cf-font-semibold cf-text-white cf-cursor-pointer">
-          Login
+        <button type="submit" className="bg-gray-900 w-full h-[43px] rounded-lg font-semibold text-white cursor-pointer">
+            Login
         </button>
-  
-        <div className="cf-register cf-text-center cf-text-gray-900 cf-text-sm cf-font-medium cf-mt-8 cf-mb-4">
-          <p>If you don't have an account? <a href="#" onClick={() => setIsRegister(true)} className="cf-font-semibold cf-hover:underline">Register Here</a></p>
+        <div className="register text-center text-gray-900 text-sm font-medium mt-8 mb-4">
+            <p>If you don't have an account? <a href="#" onClick={() => setIsRegister(true)} className="font-semibold hover:underline">Register Here</a></p>
         </div>
-      </form>
-      
-
-    </div>
+    </form>
+</div>
    
   );
 };
