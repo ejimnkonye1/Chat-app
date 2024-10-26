@@ -44,7 +44,7 @@ export const Searchs = () => {
         placeholder="Search..."
         aria-label="Search"
       />
-      <button className="text-2xl bg-blue-500 text-white rounded-r-md p-2 hover:bg-blue-600 transition duration-200">
+      <button className="text-3xl bg-blue-500 text-white rounded-r-md p-2 hover:bg-blue-600 transition duration-200">
         <CiSearch />
       </button>
     </div>
