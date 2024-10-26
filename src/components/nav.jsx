@@ -12,6 +12,11 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser , messages }) => {
         setShowEmails(false);
         setShowChat(true);
     };
+
+    const handleToggleEmail = () => {
+        setShowEmails(true);
+        setShowChat(false);
+    };
     useEffect(() => {
         // Start with the existing state and make a copy to update
         setUsersWithMessages(prevUsersWithMessages => {
@@ -50,24 +55,31 @@ export const UserChatTable = ({ onlineUsers, setSelectedUser , messages }) => {
 
     return (
         <div>
-            <a className="navbar-brand" href="#">Chat</a>
-            <div className="d-flex justify-content-end cf-text-nightowl-text">
-                <HiOutlinePencilAlt  onClick={handleToggleChat} style={{ cursor: 'pointer' }}/>
+            <div className="flex justify-between text-2xl py-4 px-4">
+            <a  href="#">Chat</a>
+            <div className="flex justify-content-end cf-text-nightowl-text ml-6">
+                <HiOutlinePencilAlt onClick={handleToggleChat} style={{ cursor: 'pointer' }}/>
+            </div>
             </div>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>User Chats</TableCell>
+                    <TableCell className="cf-text-nightowl-userText" onClick={handleToggleEmail} style={{ cursor: 'pointer' }}>User Chats</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {usersWithMessages.map((user) => (
-                        <TableRow key={user.uid} onClick={() => setSelectedUser (user)}>
+                {showEmails && usersWithMessages.map((user) => (
+                        <TableRow key={user.uid} onClick={() => setSelectedUser(user)}>
                             <TableCell className={user.lastMessageType}>
                                 <span>{user.email}</span>
                                 <br />
                                 <span>{user.lastMessage}</span>
                             </TableCell>
+                        </TableRow>
+                    ))}
+                    {showChat && onlineUsers.map((user) => (
+                        <TableRow key={user.uid} onClick={() => setSelectedUser(user)}>
+                            <TableCell>{user.email}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
