@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { useState, useEffect } from "react";
 
+// UserChat Component
 export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
     const [usersWithMessages, setUsersWithMessages] = useState([]);
 
@@ -37,7 +38,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
     }, [onlineUsers, messages]);
 
     return (
-        <div className=" p-4 rounded-lg shadow-lg max-w-md mx-auto">
+        <div className="p-4 bg-white rounded-lg max-w-md mx-auto">
             <Table className="w-full">
                 <TableHead>
                     <TableRow>
@@ -50,7 +51,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
                             <TableRow
                                 key={user.uid}
                                 onClick={() => setSelectedUser(user)}
-                                className="hover:gray cursor-pointer"
+                                className="hover:bg-gray-100 cursor-pointer transition-colors"
                             >
                                 <TableCell className="p-4 text-nightowl-text">
                                     <div className="font-bold text-nightowl-blue">{user.username}</div>
@@ -85,54 +86,51 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
 
 
 
-
+// Head Component
 export const Head = ({ onlineUsers, setSelectedUser, searchQuery }) => {
     const [showChat, setShowChat] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
-        setIsOpen(prevState => !prevState);
+        setIsOpen((prevState) => !prevState);
         setShowChat(true);
     };
 
-    const filteredUsers = onlineUsers.filter(user =>
+    const filteredUsers = onlineUsers.filter((user) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
         <div className="flex justify-between text-2xl py-4 px-4">
-            <a href="#">Chat</a>
+            <a href="#" className="text-nightowl-blue">Chat</a>
             <div className="relative inline-block text-left">
                 {isOpen && (
-                    <div className="z-10 absolute left-0 mt-10 bg-white rounded-lg shadow-lg w-56 max-h-80 
-                        overflow-y-auto ring-1 ring-black ring-opacity-5">
+                    <div className="z-10 absolute left-0 mt-10 bg-white rounded-lg shadow-lg w-56 max-h-80 overflow-y-auto ring-1 ring-black ring-opacity-5">
                         <ul className="py-2 text-sm text-gray-700">
-                            <li>
-                                {showChat && (searchQuery ? filteredUsers : onlineUsers).length > 0 ? (
-                                    (searchQuery ? filteredUsers : onlineUsers).map((user) => (
-                                        <div 
-                                            key={user.uid} 
-                                            onClick={() => setSelectedUser(user)}
-                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors 
-                                                border-b border-gray-200 last:border-none"
-                                        >
-                                            <span className="font-medium text-gray-800">{user.username}</span>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500 px-4 py-2">No name found</p>
-                                )}
-                            </li>
+                            {showChat && (searchQuery ? filteredUsers : onlineUsers).length > 0 ? (
+                                (searchQuery ? filteredUsers : onlineUsers).map((user) => (
+                                    <div
+                                        key={user.uid}
+                                        onClick={() => setSelectedUser(user)}
+                                        className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors border-b border-gray-200 last:border-none"
+                                    >
+                                        <span className="font-medium text-gray-800">{user.username}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-gray-500 px-4 py-2">No name found</p>
+                            )}
                         </ul>
                     </div>
                 )}
             </div>
             <div className="flex justify-content-end text-gray-800 ml-6">
-                <HiOutlinePencilAlt 
-                    onClick={toggleDropdown} 
-                    className="cursor-pointer text-2xl hover:text-gray-500 transition-colors" 
+                <HiOutlinePencilAlt
+                    onClick={toggleDropdown}
+                    className="cursor-pointer text-2xl hover:text-gray-500 transition-colors"
                 />
             </div>
         </div>
     );
 };
+
