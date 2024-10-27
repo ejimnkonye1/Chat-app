@@ -1,13 +1,19 @@
 import { useState } from "react";
+import PropTypes from 'prop-types';
 import { CiSearch } from "react-icons/ci";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-export const Searchs = () => {
+export const Searchs = ({searchQuery,setSearchQuery}) => {
   
   const [isOpen, setIsOpen] = useState(false);
+  
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value)
+  }
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
       };
+
       
   return (
     <div className="flex justify-between relative inline-block">
@@ -37,18 +43,25 @@ export const Searchs = () => {
                     </ul>
                 </div>
             )}
-      <div className="flex items-center border border-gray-300 rounded-md shadow-sm ">
-      <input
-        type="search"
-        className="flex-grow p-2 rounded-l-md focus:outline-none "
-        placeholder="Search..."
-        aria-label="Search"
-      />
-      <button className="text-3xl bg-blue-500 text-white rounded-r-md p-2 hover:bg-blue-600 transition duration-200">
-        <CiSearch />
-      </button>
-    </div>
+            <div className="flex items-center border border-gray-300 rounded-full shadow-sm">
+        <button className="text-xl text-gray-500 px-3" aria-label="Search Icon">
+          <CiSearch />
+        </button>
+        <input
+          type="search"
+          className="flex-grow p-2 rounded-full focus:outline-none"
+          placeholder="Search..."
+          aria-label="Search"
+          value={searchQuery}
+          onChange={handleInputChange}
+        />
+      </div>
     </div>
     
   );
+};
+
+Searchs.propTypes = {
+  searchQuery: PropTypes.string.isRequired,
+  setSearchQuery: PropTypes.func.isRequired, // setSearchQuery must be a function and is required
 };

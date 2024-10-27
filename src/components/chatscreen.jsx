@@ -10,6 +10,7 @@ import { FaRegSmile } from "react-icons/fa";
 import { FaPaperPlane } from "react-icons/fa";
 export  const ChatScreen = () => {
   const [showEmails, setShowEmails] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('')
   const [showChat, setShowChat] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -135,10 +136,15 @@ export  const ChatScreen = () => {
         <div className="p-4">
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 lg:w-5/12 xl:w-1/3 mb-4 md:mb-0">
-              <Searchs />
+              <Searchs 
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
               <Head 
                 onlineUsers={onlineUsers}
                 setSelectedUser={setSelectedUser}
+                searchQuery={searchQuery}
+
               />
               <UserChat
                 onlineUsers={onlineUsers}
