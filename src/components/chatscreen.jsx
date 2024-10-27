@@ -127,73 +127,91 @@ export  const ChatScreen = () => {
 
   let lastDate = null;
     return (
-      <div className="flex h-screen">
-        {/* Left Sidebar */}
-        <div className="w-1/3 bg-white border-r border-gray-300 p-4">
-          <Searchs 
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
-          <Head 
-            onlineUsers={onlineUsers}
-            setSelectedUser={setSelectedUser}
-            searchQuery={searchQuery}
-          />
-          <UserChat
-            onlineUsers={onlineUsers}
-            setSelectedUser={setSelectedUser}
-            messages={messages}
-          />
-        </div>
-  
-        {/* Right Chat Area */}
-        <div className="flex-1 flex flex-col">
-          {/* Chat Header */}
-          <div className="p-4 bg-gray-100 border-b">
-            <h6 className="text-lg font-semibold">
-              {selectedUser ? selectedUser.name || selectedUser.email : "Select a user to start chatting"}
-            </h6>
+  <div className="flex h-screen font-sans">
+    {/* Left Sidebar */}
+    <div className="w-1/3 bg-white border-r border-gray-300 p-4">
+      <Searchs 
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+      <Head 
+        onlineUsers={onlineUsers}
+        setSelectedUser={setSelectedUser}
+        searchQuery={searchQuery}
+      />
+      <UserChat
+        onlineUsers={onlineUsers}
+        setSelectedUser={setSelectedUser}
+        messages={messages}
+      />
+    </div>
+
+    {/* Right Chat Area */}
+    <div className="flex-1 flex flex-col">
+      {/* Chat Header */}
+      <div className="p-4 bg-gray-100 border-b">
+        <h6 className="text-lg font-semibold text-black">
+          {selectedUser ? selectedUser.name || selectedUser.email : "Select a user to start chatting"}
+        </h6>
+      </div>
+
+      {/* Chat Messages */}
+      <div className="flex-1 overflow-y-auto p-4">
+      <ul className="space-y-2 message-list">
+  {messages.map((msg, index) => {
+    const messageDate = formatDate(msg.timestamp);
+    const showDate = lastDate !== messageDate;
+    lastDate = messageDate;
+    return (
+      <div key={index}>
+        {showDate && (
+          <div className="date-divider text-center text-xs font-bold text-gray-500 my-2">
+            {messageDate}
           </div>
-  
-          {/* Chat Messages */}
-          <div className="flex-1 overflow-y-auto p-4">
-            <ul className="space-y-2">
-              {messages.map((msg, index) => (
-                <li key={index} className={`message-item ${msg.senderId === senderId ? "sent" : "received"}`}>
-                  <span>{msg.content}</span>
-                  <small className="block text-xs text-gray-600 mt-1">
-                    {msg.timestamp?.toDate().toLocaleTimeString()}
-                  </small>
-                </li>
-              ))}
-            </ul>
-          </div>
-  
-          {/* Message Input */}
-          <div className="p-4 bg-gray-100 flex items-center">
-            <input
-              type="text"
-              className="flex-grow border rounded-lg px-4 py-2"
-              placeholder="Type a message..."
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-            />
-            <a className="ml-3 text-gray-500 hover:text-gray-700" href="#!">
-              <FiPaperclip />
-            </a>
-            <a className="ml-3 text-gray-500 hover:text-gray-700" href="#!">
-              <FaRegSmile />
-            </a>
-            <a
-              className="ml-3 text-blue-500 hover:text-blue-700"
-              onClick={handleSendMessage}
-            >
-              <FaPaperPlane />
-            </a>
-          </div>
-        </div>
+        )}
+        <li
+          className={`message-item ${
+            msg.senderId === senderId ? "sent" : "received"
+          }`}
+        >
+          <span>{msg.content}</span>
+          <small className="block text-xs text-gray-600 mt-1">
+            {formatTime(msg.timestamp)}
+          </small>
+        </li>
       </div>
     );
+  })}
+</ul>
+
+      </div>
+
+      {/* Message Input */}
+      <div className="p-3 bg-gray-100 flex items-center">
+        <input
+          type="text"
+          className="flex-grow border rounded-lg px-3 py-1.5 text-sm"
+          placeholder="Type a message..."
+          value={chatInput}
+          onChange={(e) => setChatInput(e.target.value)}
+        />
+        <a className="ml-3 text-gray-500 hover:text-gray-700" href="#!">
+          <FiPaperclip />
+        </a>
+        <a className="ml-3 text-gray-500 hover:text-gray-700" href="#!">
+          <FaRegSmile />
+        </a>
+        <a
+          className="ml-3 text-blue-500 hover:text-blue-700"
+          onClick={handleSendMessage}
+        >
+          <FaPaperPlane />
+        </a>
+      </div>
+    </div>
+  </div>
+);
+
 };
 
 

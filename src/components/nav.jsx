@@ -38,11 +38,11 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
     }, [onlineUsers, messages]);
 
     return (
-        <div className="p-4 bg-white rounded-lg max-w-md mx-auto">
+        <div className="p-4 bg-white rounded-lg max-w-md mx-auto shadow-bubble font-sans">
             <Table className="w-full">
                 <TableHead>
                     <TableRow>
-                        <TableCell className="text-lg font-sans text-nightowl-text">Active Chats</TableCell>
+                        <TableCell className="text-lg text-black">Active Chats</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -53,13 +53,13 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
                                 onClick={() => setSelectedUser(user)}
                                 className="hover:bg-gray-100 cursor-pointer transition-colors"
                             >
-                                <TableCell className="p-4 text-nightowl-text">
-                                    <div className="font-bold text-nightowl-blue">{user.username}</div>
+                                <TableCell className="p-4 text-gray-600">
+                                    <div className="font-bold text-black">{user.username}</div>
                                     <div
                                         className={`${
                                             user.lastMessageType === 'sending'
-                                                ? 'text-nightowl-cyan'
-                                                : 'text-nightowl-yellow'
+                                                ? 'text-gray-600'
+                                                : 'text-gray-400'
                                         } text-sm mt-1`}
                                     >
                                         {user.lastMessage}
@@ -69,7 +69,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell className="p-4 text-sm text-nightowl-text">No active chats available.</TableCell>
+                            <TableCell className="p-4 text-sm text-gray-600">No active chats available.</TableCell>
                         </TableRow>
                     )}
                 </TableBody>
@@ -77,14 +77,6 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
         </div>
     );
 };
-
-
-
-
-
-
-
-
 
 // Head Component
 export const Head = ({ onlineUsers, setSelectedUser, searchQuery }) => {
@@ -101,8 +93,8 @@ export const Head = ({ onlineUsers, setSelectedUser, searchQuery }) => {
     );
 
     return (
-        <div className="flex justify-between text-2xl py-4 px-4">
-            <a href="#" className="text-nightowl-blue">Chat</a>
+        <div className="flex justify-between text-2xl py-4 px-4 font-sans">
+            <a href="#" className="text-black">Chat</a>
             <div className="relative inline-block text-left">
                 {isOpen && (
                     <div className="z-10 absolute left-0 mt-10 bg-white rounded-lg shadow-lg w-56 max-h-80 overflow-y-auto ring-1 ring-black ring-opacity-5">
@@ -114,7 +106,7 @@ export const Head = ({ onlineUsers, setSelectedUser, searchQuery }) => {
                                         onClick={() => setSelectedUser(user)}
                                         className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors border-b border-gray-200 last:border-none"
                                     >
-                                        <span className="font-medium text-gray-800">{user.username}</span>
+                                        <span className="font-medium text-black">{user.username}</span>
                                     </div>
                                 ))
                             ) : (
@@ -133,4 +125,3 @@ export const Head = ({ onlineUsers, setSelectedUser, searchQuery }) => {
         </div>
     );
 };
-
