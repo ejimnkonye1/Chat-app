@@ -58,11 +58,16 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
                                     <div
                                         className={`${
                                             user.lastMessageType === 'sending'
-                                                ? 'text-gray-600'
+                                                ? 'text-black'
                                                 : 'text-gray-400'
                                         } text-sm mt-1`}
                                     >
-                                        {user.lastMessage}
+                                        {user.lastMessage
+                                          ? user.lastMessage.length > 15
+                                            ? `${user.lastMessage.substring(0, 15)}...`
+                                            : user.lastMessage
+                                          : ""}
+
                                     </div>
                                 </TableCell>
                             </TableRow>
