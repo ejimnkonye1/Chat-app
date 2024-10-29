@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { useState, useEffect, useRef } from "react";
 import {  doc,  updateDoc, } from 'firebase/firestore';
@@ -9,36 +9,80 @@ import pop from '../audio/pop.mp3'
 export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserId }) => {
     const [usersWithMessages, setUsersWithMessages] = useState([]);
   const playpop = useRef(new Audio(pop))
-    useEffect(() => {
-        console.log("Online Users: ", onlineUsers);
-        console.log("Messages: ", messages);
-        console.log("Current User ID: ", currentUserId);
-        const updatedUsersWithMessages = onlineUsers.map((user) => {
-            const userMessages = messages.filter(
-                (msg) => msg.senderId === user.uid || msg.receiverId === user.uid
-            );
+    // useEffect(() => {
+    //     
+    //     const updatedUsersWithMessages = onlineUsers.map((user) => {
+    //         const userMessages = messages.filter(
+    //             (msg) => msg.senderId === user.uid || msg.receiverId === user.uid
+    //         );
 
-            const lastMessage = userMessages.length > 0 ? userMessages[userMessages.length - 1] : null;
+    //         const lastMessage = userMessages.length > 0 ? userMessages[userMessages.length - 1] : null;
 
             
-            const unreadCount = userMessages.filter(
+    //         const unreadCount = userMessages.filter(
+    //             msg => msg.receiverId === currentUserId && !msg.read
+    //         ).length;
+    //             if (unreadCount){
+    //         playpop.current.play()
+    //     }
+
+    //         return {
+    //             ...user,
+    //             lastMessage: lastMessage ? lastMessage.content : null,
+    //             lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
+    //             lastMessageCount: unreadCount, 
+                
+    //         };
+    //     });
+    
+    //     setUsersWithMessages(updatedUsersWithMessages);
+    // }, [onlineUsers, messages, currentUserId]);
+
+
+    useEffect(() => {
+        // Start with the existing state and make a copy to update
+        setUsersWithMessages(prevUsersWithMessages => {
+            const updatedUsersWithMessages = [...prevUsersWithMessages];
+
+            onlineUsers.forEach(user => {
+                const userMessages = messages.filter(msg =>
+                    msg.senderId === user.uid || msg.receiverId === user.uid
+                );
+
+                if (userMessages.length > 0) {
+                    const lastMessage = userMessages[userMessages.length - 1];
+                    const existingUserIndex = updatedUsersWithMessages.findIndex(u => u.uid === user.uid);
+     const unreadCount = userMessages.filter(
                 msg => msg.receiverId === currentUserId && !msg.read
             ).length;
-            if (unreadCount){
-                playpop.current.play()
-            }
+                if (unreadCount){
+            playpop.current.play()
+        }
+                    if (existingUserIndex === -1) {
+                        // Add new user with messages
+                        updatedUsersWithMessages.push({
+                            ...user,
+                            lastMessage:  lastMessage ? lastMessage.content : null,
+                            lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
+                            lastMessagedate: lastMessage.timestamp,
+                            lastMessageCount: unreadCount,
+                        }); 
+                    } else {
+                        // Update existing user with new last message
+                        updatedUsersWithMessages[existingUserIndex] = {
+                            ...updatedUsersWithMessages[existingUserIndex],
+                            lastMessage:  lastMessage ? lastMessage.content : null,
+                            lastMessageCount: unreadCount,
+                            lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
+                            lastMessagedate: lastMessage.timestamp
+                        };
+                    }
+                }
+            });
 
-            return {
-                ...user,
-                lastMessage: lastMessage ? lastMessage.content : null,
-                lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                lastMessageCount: unreadCount, 
-                
-            };
+            return updatedUsersWithMessages;
         });
-    
-        setUsersWithMessages(updatedUsersWithMessages);
-    }, [onlineUsers, messages, currentUserId]);
+    }, [onlineUsers, messages]);
 
     const handleUserClick = async (user) => {
         setSelectedUser (user);
@@ -61,53 +105,41 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
     };
 
     return (
-        <div className="p-4 bg-white rounded-lg max-w-md mx-auto shadow-bubble font-sans">
-            <Table className="w-full">
-                <TableHead>
-                    <TableRow>
-                        <TableCell className="text-lg text-black">Active Chats</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {usersWithMessages.length > 0 ? (
-                        usersWithMessages.map((user) => (
-                            <TableRow
-                                key={user.uid}
-                                onClick={() => handleUserClick(user)}
-                                className="hover:bg-gray-100 cursor-pointer transition-colors"
-                            >
-                                <TableCell className="p-4 text-gray-600 relative">
-                                    <div className="font-bold text-black">{user.username}</div>
-                                    <div
-                                        className={`${
-                                            user.lastMessageType === 'sending'
-                                                ? 'text-black'
-                                                : 'text-gray-400'
-                                        } text-sm mt-1`}
-                                    >
-                                        {user.lastMessage
-                                            ? user.lastMessage.length > 15
-                                                ? `${user.lastMessage.substring(0, 15)}...`
-                                                : user.lastMessage
-                                            : ""}
-                                    </div>
-                                
-                                    {user.lastMessageCount > 0 && (
-                                        <span className="absolute top-2 right-2 bg-blue-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                                            {user.lastMessageCount}
-                                        </span>
-                                    )}
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell className="p-4 text-sm text-gray-600">No active chats available.</TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
+        <div className="bg-white rounded-lg max-w-md mx-auto font-sans w-full ">
+        <div className='overflow-y-auto h-[400px]'>
+            {usersWithMessages.length > 0 ? (
+                usersWithMessages.map((user) => (
+                    <div
+                        key={user.uid}
+                        onClick={() => handleUserClick(user)}
+                        className="hover:bg-gray-100 cursor-pointer transition-colors p-4 border-b border-gray-200 relative"
+                    >
+                        <div className="font-bold text-black">{user.username}</div>
+                        <div
+                            className={`${
+                                user.lastMessageType === 'sending'
+                                    ? 'text-black'
+                                    : 'text-gray-400'
+                            } text-sm mt-1`}
+                        >
+                            {user.lastMessage
+                                ? user.lastMessage.length > 15
+                                    ? `${user.lastMessage.substring(0, 15)}...`
+                                    : user.lastMessage
+                                : ""}
+                        </div>
+                        {user.lastMessageCount > 0 && (
+                            <div className="absolute top-2 right-2 bg-blue-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                                {user.lastMessageCount}
+                            </div>
+                        )}
+                    </div>
+                ))
+            ) : (
+                <div className="p-4 text-sm text-gray-600">No active chats available.</div>
+            )}
         </div>
+    </div>
     );
 };
 

@@ -168,8 +168,8 @@ export  const ChatScreen = () => {
     {/* Right Chat Area */}
     <div className="flex-1 flex flex-col">
       {/* Chat Header */}
-      <div className={`p-4 border-b transition-colors duration-300 ${isScrolled ? 'bg-nightowl-background text-nightowl-text' : 'bg-gray-500 text-nightowl-background'}`}>
-                <h6 className="text-lg font-sans font-semibold text-white">
+      <div className={`p-4 border-b transition-colors duration-300 ${isScrolled ? '' : ''}`}>
+                <h6 className="text-lg font-sans font-semibold text-gray-500">
                     {selectedUser ? selectedUser.name || selectedUser.email : "Select a user to start chatting"}
                 </h6>
       </div>
@@ -206,10 +206,10 @@ export  const ChatScreen = () => {
       </div>
 
       {/* Message Input */}
-      <div className="p-3 bg-nightowl-cyan flex items-center">
+      <div className="p-3  flex items-center">
         <input
           type="text"
-          className="flex-grow border rounded-lg px-3 py-1.5 text-sm"
+          className="flex-grow border  border-gray-500 rounded-lg px-3 py-1.5 text-sm"
           placeholder="Type a message..."
           value={chatInput}
           onChange={(e) => setChatInput(e.target.value)}
