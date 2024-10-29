@@ -4,8 +4,9 @@ import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { useState, useEffect } from "react";
 
 // UserChat Component
-export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
+export const UserChat = ({ onlineUsers, setSelectedUser, messages, currentUserId }) => {
     const [usersWithMessages, setUsersWithMessages] = useState([]);
+    const [unreadMessages, setUnreadMessages] = useState({});
 
     useEffect(() => {
         setUsersWithMessages((prevUsersWithMessages) => {
@@ -37,6 +38,29 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
         });
     }, [onlineUsers, messages]);
 
+    useEffect(() => {
+        const newMessage = messages[messages.length - 1];
+        if (newMessage && newMessage.receiverId === currentUserId) {
+            setUnreadMessages((prevUnreadMessages) => {
+                const count = prevUnreadMessages[newMessage.senderId] || 0;
+
+                return {
+                    ...prevUnreadMessages,
+                    [newMessage.senderId]: count + 1,
+                };
+            });
+        }
+    }, [messages, currentUserId]);
+
+    const handleUserClick = (user) => {
+        setSelectedUser(user);
+        setUnreadMessages((prevUnreadMessages) => {
+            const updatedUsersMessages = { ...prevUnreadMessages };
+            delete updatedUsersMessages[user.uid];
+            return updatedUsersMessages;
+        });
+    };
+
     return (
         <div className="p-4 bg-white rounded-lg max-w-md mx-auto shadow-bubble font-sans">
             <Table className="w-full">
@@ -50,7 +74,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
                         usersWithMessages.map((user) => (
                             <TableRow
                                 key={user.uid}
-                                onClick={() => setSelectedUser(user)}
+                                onClick={() => handleUserClick(user)}
                                 className="hover:bg-gray-100 cursor-pointer transition-colors"
                             >
                                 <TableCell className="p-4 text-gray-600">
@@ -63,12 +87,16 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
                                         } text-sm mt-1`}
                                     >
                                         {user.lastMessage
-                                          ? user.lastMessage.length > 15
-                                            ? `${user.lastMessage.substring(0, 15)}...`
-                                            : user.lastMessage
-                                          : ""}
-
+                                            ? user.lastMessage.length > 15
+                                                ? `${user.lastMessage.substring(0, 15)}...`
+                                                : user.lastMessage
+                                            : ""}
                                     </div>
+                                    {unreadMessages[user.uid] && 
+                                        <div className="absolute top-2 right-2 bg-nightowl-red text-nightowl-text font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                                            {unreadMessages[user.uid]}
+                                        </div>
+                                    }
                                 </TableCell>
                             </TableRow>
                         ))
@@ -82,6 +110,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages }) => {
         </div>
     );
 };
+
 
 // Head Component
 export const Head = ({ onlineUsers, setSelectedUser, searchQuery }) => {

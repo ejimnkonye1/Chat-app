@@ -43,19 +43,21 @@ export const Searchs = ({searchQuery,setSearchQuery}) => {
                     </ul>
                 </div>
             )}
-            <div className="flex items-center border border-gray-300 rounded-full shadow-sm">
-        <button className="text-xl text-gray-500 px-3" aria-label="Search Icon">
-          <CiSearch />
-        </button>
-        <input
-          type="search"
-          className="flex-grow p-2 rounded-full focus:outline-none"
-          placeholder="Search..."
-          aria-label="Search"
-          value={searchQuery}
-          onChange={handleInputChange}
-        />
-      </div>
+            <div className="flex relative items-center border border-gray-300 rounded-full text-left shadow-sm">
+              <button className="text-xl text-gray-500 px-3" aria-label="Search Icon">
+                <CiSearch />
+              </button>
+              <div>
+              <input
+                type="search"
+                className="flex-grow p-2 rounded-full focus:outline-none pr-24"
+                placeholder="Search..."
+                aria-label="Search"
+                value={searchQuery}
+                onChange={handleInputChange}
+              />
+              </div>
+            </div>
     </div>
     
   );
