@@ -2,8 +2,10 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { useState, useEffect } from "react";
+import { doc, updateDoc } from 'firebase/firestore';
+import { firestore } from '../Firebase';
 
-// UserChat Component
+
 export const UserChat = ({ onlineUsers, setSelectedUser, messages, currentUserId }) => {
     const [usersWithMessages, setUsersWithMessages] = useState([]);
     const [unreadMessages, setUnreadMessages] = useState({});
@@ -40,26 +42,41 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages, currentUserId
 
     useEffect(() => {
         const newMessage = messages[messages.length - 1];
-        if (newMessage && newMessage.receiverId === currentUserId) {
-            setUnreadMessages((prevUnreadMessages) => {
-                const count = prevUnreadMessages[newMessage.senderId] || 0;
-
-                return {
-                    ...prevUnreadMessages,
-                    [newMessage.senderId]: count + 1,
-                };
-            });
+        if (newMessage && newMessage.receiverId === currentUserId && !newMessage.read) {
+            setUnreadMessages((prevUnreadMessages) => ({
+                ...prevUnreadMessages,
+                [newMessage.senderId]: (prevUnreadMessages[newMessage.senderId] || 0) + 1,
+            }));
         }
     }, [messages, currentUserId]);
 
-    const handleUserClick = (user) => {
+    const handleUserClick = async (user) => {
         setSelectedUser(user);
-        setUnreadMessages((prevUnreadMessages) => {
-            const updatedUsersMessages = { ...prevUnreadMessages };
-            delete updatedUsersMessages[user.uid];
-            return updatedUsersMessages;
-        });
+    
+        // Find all unread messages from this user and mark them as read in Firestore
+        const unreadMessagesToMarkRead = messages.filter(
+            (msg) => msg.senderId === user.uid && msg.receiverId === currentUserId && !msg.read
+        );
+    
+        try {
+            const updatePromises = unreadMessagesToMarkRead.map((msg) =>
+                updateDoc(doc(firestore, 'messages', msg.id), { read: true })
+            );
+    
+            // Wait for all updates to complete
+            await Promise.all(updatePromises);
+    
+            // Reset the unread count for this user locally
+            setUnreadMessages((prevUnreadMessages) => {
+                const updatedUnread = { ...prevUnreadMessages };
+                delete updatedUnread[user.uid];
+                return updatedUnread;
+            });
+        } catch (error) {
+            console.error("Error updating message read status:", error);
+        }
     };
+    
 
     return (
         <div className="p-4 bg-white rounded-lg max-w-md mx-auto shadow-bubble font-sans">
@@ -77,7 +94,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages, currentUserId
                                 onClick={() => handleUserClick(user)}
                                 className="hover:bg-gray-100 cursor-pointer transition-colors"
                             >
-                                <TableCell className="p-4 text-gray-600">
+                                <TableCell className="p-4 text-gray-600 relative">
                                     <div className="font-bold text-black">{user.username}</div>
                                     <div
                                         className={`${
@@ -110,6 +127,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages, currentUserId
         </div>
     );
 };
+
 
 
 // Head Component

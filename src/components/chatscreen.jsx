@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { auth, firestore } from '../Firebase';
 import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
 import {  Head, UserChat,  } from './nav';
@@ -19,6 +19,8 @@ export  const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const senderId = auth.currentUser?.uid;
+  const chatContainerRef = useRef(null);
+
 
   const fetchUsers = async (auth, setOnlineUsers, firestore) => {
     try {
@@ -35,12 +37,17 @@ export  const ChatScreen = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    }
+        if (chatContainerRef.current) {
+            setIsScrolled(chatContainerRef.current.scrollTop > 50);
+        }
+    };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll)
-  },[])
+    const chatContainer = chatContainerRef.current;
+    chatContainer.addEventListener('scroll', handleScroll);
+    
+    return () => chatContainer.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
@@ -146,6 +153,8 @@ export  const ChatScreen = () => {
         onlineUsers={onlineUsers}
         setSelectedUser={setSelectedUser}
         searchQuery={searchQuery}
+        currentUserId={senderId}
+        
       />
       <UserChat
         onlineUsers={onlineUsers}
@@ -158,13 +167,13 @@ export  const ChatScreen = () => {
     <div className="flex-1 flex flex-col">
       {/* Chat Header */}
       <div className={`p-4 border-b transition-colors duration-300 ${isScrolled ? 'bg-nightowl-background text-nightowl-text' : 'bg-gray-500 text-nightowl-background'}`}>
-        <h6 className="text-lg font-sans font-semibold text-white">
-          {selectedUser ? selectedUser.name || selectedUser.email : "Select a user to start chatting"}
-        </h6>
+                <h6 className="text-lg font-sans font-semibold text-white">
+                    {selectedUser ? selectedUser.name || selectedUser.email : "Select a user to start chatting"}
+                </h6>
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
       <ul className="space-y-2 message-list">
   {messages.map((msg, index) => {
     const messageDate = formatDate(msg.timestamp);
