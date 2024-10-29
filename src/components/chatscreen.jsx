@@ -160,6 +160,8 @@ export  const ChatScreen = () => {
         onlineUsers={onlineUsers}
         setSelectedUser={setSelectedUser}
         messages={messages}
+        selectedUser={selectedUser}
+        currentUserId={senderId}
       />
     </div>
 

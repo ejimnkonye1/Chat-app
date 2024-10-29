@@ -2,81 +2,59 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { useState, useEffect } from "react";
-import { doc, updateDoc } from 'firebase/firestore';
+import {  doc,  updateDoc, } from 'firebase/firestore';
 import { firestore } from '../Firebase';
 
 
-export const UserChat = ({ onlineUsers, setSelectedUser, messages, currentUserId }) => {
+export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserId }) => {
     const [usersWithMessages, setUsersWithMessages] = useState([]);
-    const [unreadMessages, setUnreadMessages] = useState({});
 
     useEffect(() => {
-        setUsersWithMessages((prevUsersWithMessages) => {
-            const updatedUsersWithMessages = [...prevUsersWithMessages];
-            onlineUsers.forEach((user) => {
-                const userMessages = messages.filter(
-                    (msg) => msg.senderId === user.uid || msg.receiverId === user.uid
-                );
-                if (userMessages.length > 0) {
-                    const lastMessage = userMessages[userMessages.length - 1];
-                    const existingUserIndex = updatedUsersWithMessages.findIndex((u) => u.uid === user.uid);
+        console.log("Online Users: ", onlineUsers);
+        console.log("Messages: ", messages);
+        console.log("Current User ID: ", currentUserId);
+        const updatedUsersWithMessages = onlineUsers.map((user) => {
+            const userMessages = messages.filter(
+                (msg) => msg.senderId === user.uid || msg.receiverId === user.uid
+            );
 
-                    if (existingUserIndex === -1) {
-                        updatedUsersWithMessages.push({
-                            ...user,
-                            lastMessage: lastMessage.content,
-                            lastMessageType: lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                        });
-                    } else {
-                        updatedUsersWithMessages[existingUserIndex] = {
-                            ...updatedUsersWithMessages[existingUserIndex],
-                            lastMessage: lastMessage.content,
-                            lastMessageType: lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                        };
-                    }
-                }
-            });
-            return updatedUsersWithMessages;
+            const lastMessage = userMessages.length > 0 ? userMessages[userMessages.length - 1] : null;
+
+            
+            const unreadCount = userMessages.filter(
+                msg => msg.receiverId === currentUserId && !msg.read
+            ).length;
+
+            return {
+                ...user,
+                lastMessage: lastMessage ? lastMessage.content : null,
+                lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
+                lastMessageCount: unreadCount, 
+            };
         });
-    }, [onlineUsers, messages]);
 
-    useEffect(() => {
-        const newMessage = messages[messages.length - 1];
-        if (newMessage && newMessage.receiverId === currentUserId && !newMessage.read) {
-            setUnreadMessages((prevUnreadMessages) => ({
-                ...prevUnreadMessages,
-                [newMessage.senderId]: (prevUnreadMessages[newMessage.senderId] || 0) + 1,
-            }));
-        }
-    }, [messages, currentUserId]);
+        setUsersWithMessages(updatedUsersWithMessages);
+    }, [onlineUsers, messages, currentUserId]);
 
     const handleUserClick = async (user) => {
-        setSelectedUser(user);
-    
-        // Find all unread messages from this user and mark them as read in Firestore
+        setSelectedUser (user);
+
+        // Mark unread messages as read in Firestore
         const unreadMessagesToMarkRead = messages.filter(
             (msg) => msg.senderId === user.uid && msg.receiverId === currentUserId && !msg.read
         );
-    
+
         try {
             const updatePromises = unreadMessagesToMarkRead.map((msg) =>
                 updateDoc(doc(firestore, 'messages', msg.id), { read: true })
             );
-    
+
             // Wait for all updates to complete
             await Promise.all(updatePromises);
-    
-            // Reset the unread count for this user locally
-            setUnreadMessages((prevUnreadMessages) => {
-                const updatedUnread = { ...prevUnreadMessages };
-                delete updatedUnread[user.uid];
-                return updatedUnread;
-            });
         } catch (error) {
             console.error("Error updating message read status:", error);
         }
     };
-    
 
     return (
         <div className="p-4 bg-white rounded-lg max-w-md mx-auto shadow-bubble font-sans">
@@ -109,11 +87,12 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages, currentUserId
                                                 : user.lastMessage
                                             : ""}
                                     </div>
-                                    {unreadMessages[user.uid] && 
-                                        <div className="absolute top-2 right-2 bg-nightowl-red text-nightowl-text font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                                            {unreadMessages[user.uid]}
-                                        </div>
-                                    }
+                                
+                                    {user.lastMessageCount > 0 && (
+                                        <span className="absolute top-2 right-2 bg-blue-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                                            {user.lastMessageCount}
+                                        </span>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))
@@ -127,6 +106,8 @@ export const UserChat = ({ onlineUsers, setSelectedUser, messages, currentUserId
         </div>
     );
 };
+
+
 
 
 
