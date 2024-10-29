@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {  doc,  updateDoc, } from 'firebase/firestore';
 import { firestore } from '../Firebase';
-
+import pop from '../audio/pop.mp3'
 
 export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserId }) => {
     const [usersWithMessages, setUsersWithMessages] = useState([]);
-
+  const playpop = useRef(new Audio(pop))
     useEffect(() => {
         console.log("Online Users: ", onlineUsers);
         console.log("Messages: ", messages);
@@ -24,15 +24,19 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
             const unreadCount = userMessages.filter(
                 msg => msg.receiverId === currentUserId && !msg.read
             ).length;
+            if (unreadCount){
+                playpop.current.play()
+            }
 
             return {
                 ...user,
                 lastMessage: lastMessage ? lastMessage.content : null,
                 lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
                 lastMessageCount: unreadCount, 
+                
             };
         });
-
+    
         setUsersWithMessages(updatedUsersWithMessages);
     }, [onlineUsers, messages, currentUserId]);
 
