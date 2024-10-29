@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { auth, firestore } from '../Firebase';
 import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
 import {  Head, UserChat,  } from './nav';
@@ -9,7 +9,9 @@ import { FiPaperclip } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import { FaPaperPlane } from "react-icons/fa";
 export  const ChatScreen = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [showEmails, setShowEmails] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('')
   const [showChat, setShowChat] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -17,6 +19,8 @@ export  const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const senderId = auth.currentUser?.uid;
+  const chatContainerRef = useRef(null);
+
 
   const fetchUsers = async (auth, setOnlineUsers, firestore) => {
     try {
@@ -31,6 +35,18 @@ export  const ChatScreen = () => {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+        if (chatContainerRef.current) {
+            setIsScrolled(chatContainerRef.current.scrollTop > 50);
+        }
+    };
+
+    const chatContainer = chatContainerRef.current;
+    chatContainer.addEventListener('scroll', handleScroll);
+    
+    return () => chatContainer.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -125,108 +141,96 @@ export  const ChatScreen = () => {
   };
 
   let lastDate = null;
-  return (
-    <div>
-   <section className="chat-section">
-  <div className="container mx-auto py-3">
-    <div className="flex flex-col">
-      <div className="mb-5"></div>
-      <div className="bg-white shadow-lg rounded-lg" id="chat3">
-        <div className="p-4">
-          <div className="flex flex-wrap">
-            <div className="w-full md:w-1/2 lg:w-5/12 xl:w-1/3 mb-4 md:mb-0">
-              <Searchs />
-              <Head 
-                onlineUsers={onlineUsers}
-                setSelectedUser={setSelectedUser}
-              />
-              <UserChat
-                onlineUsers={onlineUsers}
-                setSelectedUser={setSelectedUser}
-                messages={messages}
-                senderId={senderId}
-                showEmails={showEmails}
-                setShowEmails={setShowEmails}
-                showChat={showChat}
-                setShowChat={setShowChat}
-              />
-             
+    return (
+  <div className="flex h-screen font-sans">
+    {/* Left Sidebar */}
+    <div className="w-1/3 bg-white border-r border-gray-300 p-4">
+      <Searchs 
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+      <Head 
+        onlineUsers={onlineUsers}
+        setSelectedUser={setSelectedUser}
+        searchQuery={searchQuery}
+        currentUserId={senderId}
         
-            </div>
-        
-            <div className="w-full md:w-1/2 lg:w-7/12 xl:w-2/3">
-              <div>
-                <h6 className="p-2">
-                  {selectedUser ? selectedUser.name || selectedUser.email : ""}
+      />
+      <UserChat
+        onlineUsers={onlineUsers}
+        setSelectedUser={setSelectedUser}
+        messages={messages}
+        selectedUser={selectedUser}
+        currentUserId={senderId}
+      />
+    </div>
+
+    {/* Right Chat Area */}
+    <div className="flex-1 flex flex-col">
+      {/* Chat Header */}
+      <div className={`p-4 border-b transition-colors duration-300 ${isScrolled ? '' : ''}`}>
+                <h6 className="text-lg font-sans font-semibold text-gray-500">
+                    {selectedUser ? selectedUser.name || selectedUser.email : "Select a user to start chatting"}
                 </h6>
-                <div className="chat-messages overflow-y-auto h-[400px]">
-                  <ul className="space-y-2 message-list">
-                    {messages.map((msg, index) => {
-                      const messageDate = formatDate(msg.timestamp);
-                      const showDate = lastDate !== messageDate;
-                      lastDate = messageDate;
-                      return (
-                        <div key={index}>
-                          {showDate && (
-                            <div className="text-center text-sm text-gray-500 my-2">
-                              {messageDate}
-                            </div>
-                          )}
-                          <li
-                            className={`message-item ${
-                              msg.senderId === senderId
-                                ? " sent"
-                                : " received"
-                            }`}
-                          >
-                            <span>{msg.content}</span>
-                            <small className="block text-xs text-gray-600 mt-1">
-                              {formatTime(msg.timestamp)}
-                            </small>
-                          </li>
-                        </div>
-                      );
-                    })}
-                  </ul>
-                </div>
-                <div className="message-input flex items-center mt-4">
-                  {/* <UserImage
-                    email={auth.currentUser ? auth.currentUser.email : ""}
-                    className="w-10 h-10 rounded-full mr-3"
-                  /> */}
-                  <input
-                    type="text"
-                    className="form-control form-control-lg border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Type message"
-                    value={chatInput}
-                    onChange={handleChatInput}
-                  />
-                  <a className="ml-3 text-gray-500 hover:text-gray-700" href="#!">
-                    <FiPaperclip />
-                  </a>
-                  <a className="ml-3 text-gray-500 hover:text-gray-700" href="#!">
-                    <FaRegSmile />
-                  </a>
-                  <a
-                    className="ml-3 text-blue-500 hover:text-blue-700"
-                    onClick={handleSendMessage}
-                  >
-                    <FaPaperPlane />
-                  </a>
-                </div>
-              </div>
-            </div>
+      </div>
+
+      {/* Chat Messages */}
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
+      <ul className="space-y-2 message-list">
+  {messages.map((msg, index) => {
+    const messageDate = formatDate(msg.timestamp);
+    const showDate = lastDate !== messageDate;
+    lastDate = messageDate;
+    return (
+      <div key={index}>
+        {showDate && (
+          <div className="date-divider text-center text-xs font-bold text-gray-500 my-2">
+            {messageDate}
           </div>
-        </div>
+        )}
+        <li
+          className={`message-item ${
+            msg.senderId === senderId ? "sent" : "received"
+          }`}
+        >
+          <span>{msg.content}</span>
+          <small className="block text-xs text-gray-600 mt-1">
+            {formatTime(msg.timestamp)}
+          </small>
+        </li>
+      </div>
+    );
+  })}
+</ul>
+
+      </div>
+
+      {/* Message Input */}
+      <div className="p-3  flex items-center">
+        <input
+          type="text"
+          className="flex-grow border  border-gray-500 rounded-lg px-3 py-1.5 text-sm"
+          placeholder="Type a message..."
+          value={chatInput}
+          onChange={(e) => setChatInput(e.target.value)}
+        />
+        <a className="ml-3 hover:text-gray-700" href="#!">
+          <FiPaperclip />
+        </a>
+        <a className="ml-3 hover:text-gray-700" href="#!">
+          <FaRegSmile />
+        </a>
+        <a
+          className="ml-3 text-blue-500 hover:text-blue-700"
+          onClick={handleSendMessage}
+        >
+          <FaPaperPlane />
+        </a>
       </div>
     </div>
   </div>
-</section>
+);
 
-
-    
-  </div>
-  );
 };
 
 
