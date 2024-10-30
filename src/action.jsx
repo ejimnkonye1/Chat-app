@@ -13,6 +13,10 @@ export const setMode = (mode) => ({
         export const setUsername = (user) => ({
             type: "SET_USER",
             payload:user
+        })
+        export const setUserEmail = (email) => ({
+            type: "SET_USER_EMAIL",
+            payload:email
             })
         
     

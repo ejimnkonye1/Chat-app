@@ -3,7 +3,8 @@ const initialState =  {
     darkMode: false,
     chat: '',
     image: null,
-    username: ''
+    username: '',
+    email: ''
 }
 const reducer = ( state = initialState, action) => {
 switch (action.type) {
@@ -26,6 +27,11 @@ switch (action.type) {
     return {
   ...state,
   username: action.payload
+}
+case "SET_USER_EMAIL":
+    return {
+  ...state,
+  email: action.payload
 }
     default:
         return state;

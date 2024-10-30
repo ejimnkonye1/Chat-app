@@ -145,9 +145,9 @@ export  const ChatScreen = () => {
 
   let lastDate = null;
     return (
-  <div className="flex h-screen font-sans">
+  <div className={`flex h-screen font-sans ${darkMode ? 'bg-gray-800' : 'bg-gray-300'}`}>
     {/* Left Sidebar */}
-    <div className={`w-full md:w-1/3 bg-white border-r border-gray-300 p-4 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
+    <div className={`w-full h-screen dark:bg-gray-800 md:w-1/3 bg-white border-r border-gray-300`}>
       <Searchs 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
