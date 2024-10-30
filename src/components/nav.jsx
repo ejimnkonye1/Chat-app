@@ -82,14 +82,14 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
         return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
       };
     return (
-        <div className="  text-gray-900 dark:text-gray-100 rounded-lg max-w-md mx-auto font-sans w-full">
-        <div className='overflow-y-auto h-[400px]'>
+        <div className="dark:bg-gray-800 text-gray-900 dark:text-gray-100 max-w-md mx-auto font-sans w-full">
+        <div className='overflow-y-auto'>
             {usersWithMessages.length > 0 ? (
                 usersWithMessages.map((user) => (
                     <div
                         key={user.uid}
                         onClick={() => handleUserClick(user)}
-                        className=" cursor-pointer transition-colors p-4 border-b border-gray-200 relative flex items-center"
+                        className="cursor-pointer transition-colors p-4 border-b border-gray-200 relative flex items-center"
                     >
                         <CircleImage email={user.email} />
                         <div className="ml-4 flex-1"> {/* Added ml-4 for spacing and flex-1 to take the remaining space */}
@@ -100,7 +100,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             </div>
                             <div
                                 className={`${
-                                    user.lastMessageType === 'sending'
+                                    user.lastMessageType === 'sending '
                                         ? 'text-black'
                                         : 'text-gray-400'
                                 } text-sm mt-1`}
@@ -152,7 +152,7 @@ export const Head = ({ onlineUsers, setSelectedUser  }) => {
     };
 
     return (
-        <div className={`flex justify-between text-gray-900 dark:text-gray-100 text-2xl py-4 px-4 font-sans ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
+        <div className={`flex justify-between text-gray-900 dark:text-gray-100 dark:bg-gray-900 text-2xl py-4 px-4 font-sans ${darkMode ? 'bg-gray-800' : ''}`}>
         <p className='font-bold '>Chat</p>
         <div className="relative inline-block text-left">
             {isOpen && (
