@@ -144,7 +144,7 @@ export  const ChatScreen = () => {
     return (
   <div className="flex h-screen font-sans">
     {/* Left Sidebar */}
-    <div className="w-1/3 bg-white border-r border-gray-300 p-4">
+    <div className="w-full md:w-1/3 bg-white border-r border-gray-300 p-4">
       <Searchs 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -166,7 +166,8 @@ export  const ChatScreen = () => {
     </div>
 
     {/* Right Chat Area */}
-    <div className="flex-1 flex flex-col">
+  
+    <div className="hidden md:flex flex-1 flex-col">
       {/* Chat Header */}
       <div className={`p-4 border-b transition-colors duration-300 ${isScrolled ? '' : ''}`}>
                 <h6 className="text-lg font-sans font-semibold text-gray-500">
@@ -228,6 +229,8 @@ export  const ChatScreen = () => {
         </a>
       </div>
     </div>
+  
+  
   </div>
 );
 
