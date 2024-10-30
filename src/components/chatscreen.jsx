@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { auth, firestore } from '../Firebase';
 import { addDoc, collection, getDocs, query, where, Timestamp, onSnapshot } from 'firebase/firestore';
 import {  Head, UserChat,  } from './nav';
@@ -9,6 +10,8 @@ import { FiPaperclip } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import { FaPaperPlane } from "react-icons/fa";
 export  const ChatScreen = () => {
+  const darkMode = useSelector((state) => state.darkMode)
+  
   const [isScrolled, setIsScrolled] = useState(false);
   const [showEmails, setShowEmails] = useState(false);
   const [searchQuery, setSearchQuery] = useState('')
@@ -144,7 +147,7 @@ export  const ChatScreen = () => {
     return (
   <div className="flex h-screen font-sans">
     {/* Left Sidebar */}
-    <div className="w-full md:w-1/3 bg-white border-r border-gray-300 p-4">
+    <div className={`w-full md:w-1/3 bg-white border-r border-gray-300 p-4 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
       <Searchs 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -207,10 +210,10 @@ export  const ChatScreen = () => {
       </div>
 
       {/* Message Input */}
-      <div className="p-3  flex items-center">
+      <div className="p-3 flex items-center">
         <input
           type="text"
-          className="flex-grow border  border-gray-500 rounded-lg px-3 py-1.5 text-sm"
+          className="flex-grow border bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-500 rounded-lg px-3 py-1.5 text-sm"
           placeholder="Type a message..."
           value={chatInput}
           onChange={(e) => setChatInput(e.target.value)}
