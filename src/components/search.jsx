@@ -1,13 +1,13 @@
 import { useState } from "react";
-import PropTypes from 'prop-types';
+
 import { CiSearch } from "react-icons/ci";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-export const Searchs = ({searchQuery,setSearchQuery}) => {
+export const Searchs = () => {
   
   const [isOpen, setIsOpen] = useState(false);
   
-  const handleInputChange = (e) => {
-    setSearchQuery(e.target.value)
+  const handleInputChange = () => {
+    // setSearchQuery(e.target.value)
   }
 
     const toggleMenu = () => {
@@ -43,27 +43,23 @@ export const Searchs = ({searchQuery,setSearchQuery}) => {
                     </ul>
                 </div>
             )}
-            <div className="flex relative items-center border border-gray-300 rounded-full text-left shadow-sm">
-              <button className="text-xl text-gray-500 px-3" aria-label="Search Icon">
-                <CiSearch />
-              </button>
-              <div>
-              <input
-                type="search"
-                className="flex-grow p-2 rounded-full focus:outline-none pr-24"
-                placeholder="Search..."
-                aria-label="Search"
-                value={searchQuery}
-                onChange={handleInputChange}
-              />
-              </div>
-            </div>
+       <div className="flex relative items-center border border-gray-300 rounded-full text-left shadow-sm w-full max-w-xs mx-auto"> {/* Added w-full and max-w-xs */}
+  <button className="text-xl text-gray-500 px-3" aria-label="Search Icon">
+    <CiSearch />
+  </button>
+  <div className="flex-grow"> {/* Ensure the input takes available space */}
+    <input
+      type="search"
+      className="w-full p-2 rounded-full focus:outline-none pr-10" // Changed to w-full for responsive input
+      placeholder="Search..."
+      aria-label="Search"
+      
+      onChange={handleInputChange}
+    />
+  </div>
+</div>
     </div>
     
   );
 };
 
-Searchs.propTypes = {
-  searchQuery: PropTypes.string.isRequired,
-  setSearchQuery: PropTypes.func.isRequired, // setSearchQuery must be a function and is required
-};
