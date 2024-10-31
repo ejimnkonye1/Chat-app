@@ -38,7 +38,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             ...user,
                             lastMessage:  lastMessage ? lastMessage.content : null,
                             lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                            lastMessagedate: lastMessage.timestamp,
+                            lastMessagedate: lastMessage?lastMessage.timestamp : null,
                             lastMessageCount: unreadCount,
                         }); 
                     } else {
@@ -48,7 +48,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             lastMessage:  lastMessage ? lastMessage.content : null,
                             lastMessageCount: unreadCount,
                             lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                            lastMessagedate: lastMessage.timestamp
+                            lastMessagedate: lastMessage?lastMessage.timestamp: null
                         };
                     }
                 }
@@ -118,7 +118,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             </div>
                         )}
                     <div className='absolute top-10 text-sm right-2'>
-                    {formatTime(user.lastMessagedate.toDate())}
+                    {user.lastMessagedate ? formatTime(user.lastMessagedate.toDate()) : ""}
                         </div>
                     </div>
                 ))
