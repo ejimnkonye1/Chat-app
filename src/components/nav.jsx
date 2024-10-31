@@ -8,7 +8,7 @@ import { firestore } from '../Firebase';
 import pop from '../audio/pop.mp3'
 import { CircleImage } from './userimg';
 
-export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserId }) => {
+export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserId ,setShowChatArea}) => {
     const darkMode = useSelector((state) => state.darkMode)
     const [usersWithMessages, setUsersWithMessages] = useState([]);
     const playpop = useRef(new Audio(pop))
@@ -38,7 +38,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             ...user,
                             lastMessage:  lastMessage ? lastMessage.content : null,
                             lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                            lastMessagedate: lastMessage.timestamp,
+                            lastMessagedate: lastMessage?lastMessage.timestamp : null,
                             lastMessageCount: unreadCount,
                         }); 
                     } else {
@@ -48,7 +48,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             lastMessage:  lastMessage ? lastMessage.content : null,
                             lastMessageCount: unreadCount,
                             lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                            lastMessagedate: lastMessage.timestamp
+                            lastMessagedate: lastMessage?lastMessage.timestamp: null
                         };
                     }
                 }
@@ -60,7 +60,9 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
 
     const handleUserClick = async (user) => {
         setSelectedUser (user);
-
+        if (window.innerWidth < 768) {
+            setShowChatArea(true);
+        }
         // Mark unread messages as read in Firestore
         const unreadMessagesToMarkRead = messages.filter(
             (msg) => msg.senderId === user.uid && msg.receiverId === currentUserId && !msg.read
@@ -83,7 +85,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
       };
     return (
         <div className="dark:bg-gray-800 text-gray-900 dark:text-gray-100 max-w-md mx-auto font-sans w-full">
-        <div className='overflow-y-auto'>
+        <div className='overflow-y-auto h-[410px]'>
             {usersWithMessages.length > 0 ? (
                 usersWithMessages.map((user) => (
                     <div
@@ -118,7 +120,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             </div>
                         )}
                     <div className='absolute top-10 text-sm right-2'>
-                    {formatTime(user.lastMessagedate.toDate())}
+                    {user.lastMessagedate ? formatTime(user.lastMessagedate.toDate()) : ""}
                         </div>
                     </div>
                 ))
@@ -136,7 +138,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
 
 // Head Component
 
-export const Head = ({ onlineUsers, setSelectedUser  }) => {
+export const Head = ({ onlineUsers, setSelectedUser,setShowChatArea  }) => {
     const darkMode = useSelector((state) => state.darkMode)
     const [showChat, setShowChat] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -149,6 +151,9 @@ export const Head = ({ onlineUsers, setSelectedUser  }) => {
     const handleUserSelect = (user) => {
         setSelectedUser (user);
         setIsOpen(false); 
+        if (window.innerWidth < 768) {
+            setShowChatArea(true);
+        }
     };
 
     return (
