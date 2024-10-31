@@ -9,6 +9,7 @@ import { Searchs } from './search';
 import { FiPaperclip } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import { FaPaperPlane } from "react-icons/fa";
+import { FiArrowLeft } from 'react-icons/fi';
 export  const ChatScreen = () => {
   const darkMode = useSelector((state) => state.darkMode)
   
@@ -21,6 +22,8 @@ export  const ChatScreen = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
+  const [showChatArea, setShowChatArea] = useState(false);
+
   const senderId = auth.currentUser?.uid;
   const chatContainerRef = useRef(null);
 
@@ -38,18 +41,18 @@ export  const ChatScreen = () => {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-        if (chatContainerRef.current) {
-            setIsScrolled(chatContainerRef.current.scrollTop > 50);
-        }
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //       if (chatContainerRef.current) {
+  //           setIsScrolled(chatContainerRef.current.scrollTop > 50);
+  //       }
+  //   };
 
-    const chatContainer = chatContainerRef.current;
-    chatContainer.addEventListener('scroll', handleScroll);
+  //   const chatContainer = chatContainerRef.current;
+  //   chatContainer.addEventListener('scroll', handleScroll);
     
-    return () => chatContainer.removeEventListener('scroll', handleScroll);
-  }, []);
+  //   return () => chatContainer.removeEventListener('scroll', handleScroll);
+  // }, []);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -144,10 +147,16 @@ export  const ChatScreen = () => {
   };
 
   let lastDate = null;
+  const handleBackClick = () => {
+    setShowChatArea(false); 
+};
     return (
   <div className={`flex h-screen font-sans ${darkMode ? 'bg-gray-800' : 'bg-gray-300'}`}>
     {/* Left Sidebar */}
-    <div className={`w-full h-screen dark:bg-gray-800 md:w-1/3 bg-white border-r border-gray-300`}>
+    {!showChatArea && (
+      <div className={`w-full h-screen dark:bg-gray-800 md:w-1/3 bg-white border-r border-gray-300 ${
+        showChatArea && 'hidden md:block' 
+    }`}>
       <Searchs 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -157,6 +166,8 @@ export  const ChatScreen = () => {
         setSelectedUser={setSelectedUser}
         searchQuery={searchQuery}
         currentUserId={senderId}
+        showChatArea={showChatArea}
+        setShowChatArea={setShowChatArea}
         
       />
       <UserChat
@@ -165,21 +176,31 @@ export  const ChatScreen = () => {
         messages={messages}
         selectedUser={selectedUser}
         currentUserId={senderId}
+        setShowChatArea={setShowChatArea}
       />
     </div>
-
+  )}
     {/* Right Chat Area */}
-  
-    <div className="hidden md:flex flex-1 flex-col">
+    {(showChatArea || window.innerWidth >= 768) && (
+    <div  className={`flex-1 flex-col w-full ${
+      showChatArea ? 'flex' : 'hidden'
+  } md:flex`} >
       {/* Chat Header */}
-      <div className={`p-4 border-b transition-colors duration-300 ${isScrolled ? '' : ''}`}>
-                <h6 className="text-lg font-sans font-semibold text-gray-500">
-                    {selectedUser ? selectedUser.name || selectedUser.email : "Select a user to start chatting"}
-                </h6>
-      </div>
+      <div className="p-4 border-b flex items-center transition-colors duration-300">
+
+                    <button
+                        className="block md:hidden mr-3 text-gray-500 hover:text-gray-700"
+                        onClick={handleBackClick}
+                    >
+                        <FiArrowLeft size={24} /> 
+                    </button>
+                    <h6 className="text-lg font-sans font-semibold text-gray-500">
+                        {selectedUser ? selectedUser.username || selectedUser.username : "Select a user to start chatting"}
+                    </h6>
+                </div>
 
       {/* Chat Messages */}
-      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
+      <div  className="flex-1 overflow-y-auto p-4">
       <ul className="space-y-2 message-list">
   {messages.map((msg, index) => {
     const messageDate = formatDate(msg.timestamp);
@@ -232,7 +253,7 @@ export  const ChatScreen = () => {
         </a>
       </div>
     </div>
-  
+    )}
   
   </div>
 );
