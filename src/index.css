@@ -7,67 +7,11 @@
 
 
 
-.date-divider {
-  text-align: center;
-  margin: 20px 0;
-  font-weight: bold;
-  color: #555;
-}
 
-.online-user {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
 
-.circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: green;
-  margin-right: 10px;
-}
 
-.message-list {
-  list-style: none;
-  padding: 0;
-}
 
-.message-item {
-  margin-bottom: 8px;
-  padding: 6px 10px; /* Slimmer padding for chat bubble */
-  border-radius: 10px;
-  position: relative;
-  width: fit-content;
-  min-width: 10%;
-  max-width: 60%;
-  display: flex;
-  flex-direction: column;
-  word-wrap: break-word;
-}
 
-.received {
-  align-self: flex-start;
-  background-color: #f0f0f0; /* Light gray background for received messages */
-  color: #000; /* Black text color for received messages */
-  text-align: left;
-}
 
-.sent {
-  align-self: flex-end;
-  background-color: #525853;
-  color: white;
-  text-align: right;
-  margin-left: auto;
-}
 
-.message-item small {
-  color: #000; /* Black color for timestamp */
-  margin-top: 4px;
-  font-size: 0.75rem;
-}
 
-.user {
-  overflow-y: auto !important;
-  height: 100px;
-}

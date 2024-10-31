@@ -13,6 +13,12 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
     const [usersWithMessages, setUsersWithMessages] = useState([]);
     const playpop = useRef(new Audio(pop))
 
+    useEffect(()=> {
+const storedchat = localStorage.getItem('chatHistory')
+if (storedchat){
+    setUsersWithMessages(JSON.parse(storedchat))
+}
+    },[])
     useEffect(() => {
         // Start with the existing state and make a copy to update
         setUsersWithMessages(prevUsersWithMessages => {
@@ -38,7 +44,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             ...user,
                             lastMessage:  lastMessage ? lastMessage.content : null,
                             lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                            lastMessagedate: lastMessage?lastMessage.timestamp : null,
+                            lastMessagetime: lastMessage?lastMessage.timestamp : null,
                             lastMessageCount: unreadCount,
                         }); 
                     } else {
@@ -48,11 +54,12 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             lastMessage:  lastMessage ? lastMessage.content : null,
                             lastMessageCount: unreadCount,
                             lastMessageType: lastMessage && lastMessage.senderId === user.uid ? 'sending' : 'receiving',
-                            lastMessagedate: lastMessage?lastMessage.timestamp: null
+                            lastMessagetime: lastMessage?lastMessage.timestamp: null
                         };
                     }
                 }
             });
+            localStorage.setItem('chatHistory',JSON.stringify(updatedUsersWithMessages))
 
             return updatedUsersWithMessages;
         });
@@ -60,9 +67,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
 
     const handleUserClick = async (user) => {
         setSelectedUser (user);
-        if (window.innerWidth < 768) {
-            setShowChatArea(true);
-        }
+      
         // Mark unread messages as read in Firestore
         const unreadMessagesToMarkRead = messages.filter(
             (msg) => msg.senderId === user.uid && msg.receiverId === currentUserId && !msg.read
@@ -78,11 +83,15 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
         } catch (error) {
             console.error("Error updating message read status:", error);
         }
+        if (window.innerWidth < 768) {
+            setShowChatArea(true);
+        }
     };
-    const formatTime = (date) => {
-        if (!date) return '';
-        return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-      };
+    const formatTime = (timestamp) => {
+        if (!timestamp || typeof timestamp.toDate !== 'function') return ''; // Check for null or invalid timestamp
+        const time = timestamp.toDate();
+        return time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    };
     return (
         <div className="dark:bg-gray-800 text-gray-900 dark:text-gray-100 max-w-md mx-auto font-sans w-full">
         <div className='overflow-y-auto h-[410px]'>
@@ -120,7 +129,7 @@ export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserI
                             </div>
                         )}
                     <div className='absolute top-10 text-sm right-2'>
-                    {user.lastMessagedate ? formatTime(user.lastMessagedate.toDate()) : ""}
+                    {formatTime(user.lastMessagetime)}
                         </div>
                     </div>
                 ))
@@ -157,7 +166,7 @@ export const Head = ({ onlineUsers, setSelectedUser,setShowChatArea  }) => {
     };
 
     return (
-        <div className={`flex justify-between text-gray-900 dark:text-gray-100 dark:bg-gray-900 text-2xl py-4 px-4 font-sans ${darkMode ? 'bg-gray-800' : ''}`}>
+        <div className={`flex justify-between text-gray-900 dark:text-gray-100  text-2xl py-4 px-4 font-sans ${darkMode ? 'bg-gray-800' : ''}`}>
         <p className='font-bold '>Chat</p>
         <div className="relative inline-block text-left">
             {isOpen && (

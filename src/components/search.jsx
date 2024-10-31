@@ -32,6 +32,7 @@ export const Searchs = () => {
         setIsLoading(true);
         try {
           await auth.signOut();
+          localStorage.removeItem('loggedInUser'); 
           setTimeout(() => {
             navigate('/');
           }, 5000);
@@ -73,7 +74,7 @@ export const Searchs = () => {
                 </ul>
             </div>
           )}
-       <div className="flex relative items-center border border-gray-300 rounded-full text-left shadow-sm w-full max-w-xs mx-auto"> {/* Added w-full and max-w-xs */}
+       <div className="flex relative items-center dark:bg-gray-900 dark:text-gray-100 border text-gray-900 border-gray-300 rounded-full text-left shadow-sm w-full max-w-xs mx-auto"> {/* Added w-full and max-w-xs */}
         <button className="text-xl  px-3" aria-label="Search Icon">
           <CiSearch />
         </button>

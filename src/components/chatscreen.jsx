@@ -154,8 +154,8 @@ export  const ChatScreen = () => {
   <div className={`flex h-screen font-sans ${darkMode ? 'bg-gray-800' : 'bg-gray-300'}`}>
     {/* Left Sidebar */}
     {!showChatArea && (
-      <div className={`w-full h-screen dark:bg-gray-800 md:w-1/3 bg-white border-r border-gray-300 ${
-        showChatArea && 'hidden md:block' 
+      <div className={`  h-screen dark:bg-gray-800 md:w-1/3 bg-white border-r border-gray-300 overflow-hidden ${
+        showChatArea ? 'hidden md:block' :'w-full'
     }`}>
       <Searchs 
         searchQuery={searchQuery}
@@ -182,7 +182,7 @@ export  const ChatScreen = () => {
   )}
     {/* Right Chat Area */}
     {(showChatArea || window.innerWidth >= 768) && (
-    <div  className={`flex-1 flex-col w-full ${
+    <div  className={`flex-1 flex flex-col h-screen overflow-hidden ${
       showChatArea ? 'flex' : 'hidden'
   } md:flex`} >
       {/* Chat Header */}
@@ -201,7 +201,7 @@ export  const ChatScreen = () => {
 
       {/* Chat Messages */}
       <div  className="flex-1 overflow-y-auto p-4">
-      <ul className="space-y-2 message-list">
+      <ul className="space-y-2 ">
   {messages.map((msg, index) => {
     const messageDate = formatDate(msg.timestamp);
     const showDate = lastDate !== messageDate;
@@ -214,8 +214,8 @@ export  const ChatScreen = () => {
           </div>
         )}
         <li
-          className={`message-item ${
-            msg.senderId === senderId ? "sent" : "received"
+          className={`message-item mb-2 p-1.5 px-2.5 rounded-lg relative w-fit min-w-[10%] max-w-[60%] flex flex-col break-words ${
+            msg.senderId === senderId ? "sent self-end bg-[#525853] text-white text-right ml-auto" : "received self-start bg-[#f0f0f0] text-black text-left"
           }`}
         >
           <span>{msg.content}</span>

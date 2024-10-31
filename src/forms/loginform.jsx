@@ -27,6 +27,14 @@ const dispatch = useDispatch()
           const user = userData.user.uid
    const userdoc =      await getDoc(doc(firestore, 'users', user))
         if (userdoc.exists){
+
+           const userInfo = userdoc.data();
+           localStorage.setItem('loggedInUser', JSON.stringify({
+            uid: user,
+            username: userInfo.username,
+            email: userInfo.email,
+          }));
+    
           console.log('user exists')
           Navigate('/chatbox');
         } else{

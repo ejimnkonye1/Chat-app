@@ -2,16 +2,22 @@ import { useEffect, useState } from 'react';
 import { auth, firestore } from '../Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
-const Userprofile = () => {
+const UserProfile = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (auth.currentUser ) {
-        const userRef = doc(firestore, 'users', auth.currentUser .uid); 
+      const loggedInUser = localStorage.getItem('loggedInUser');
+      if (loggedInUser) {
+        setUser(JSON.parse(loggedInUser));
+      } else if (auth.currentUser) {
+        const userRef = doc(firestore, 'users', auth.currentUser.uid);
         const userDoc = await getDoc(userRef);
         if (userDoc.exists()) {
-          setUser(userDoc.data()); 
+          const userData = userDoc.data();
+          setUser(userData);
+          // Save user data to localStorage
+          localStorage.setItem('loggedInUser', JSON.stringify(userData));
         } else {
           console.log('No user document found');
         }
@@ -32,4 +38,4 @@ const Userprofile = () => {
   );
 };
 
-export default Userprofile;
+export default UserProfile;
