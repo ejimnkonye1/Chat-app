@@ -1,9 +1,9 @@
 
 import { useSelector } from 'react-redux'
 const Userprofile = () => {
-    const username = useSelector((state) => state.username)
-    console.log(username)
-    const email = useSelector((state) => state.email)
+  const username = useSelector((state) => state.username)
+  console.log(username)
+  const email = useSelector((state) => state.email)
   return (
     <div>
       <div>
