@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { setUsername, setUserEmail } from '../action';
+import { useDispatch } from 'react-redux';
 import 'boxicons/css/boxicons.min.css';
 import { auth } from '../Firebase';
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -11,6 +12,7 @@ import RegisterForm from '../forms/registerform';
 import RequestPasswordform from '../forms/requestPassword';
 
 const LoginRegisterForm = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -31,23 +33,28 @@ const LoginRegisterForm = () => {
             setIsSignedIn(true);
             try {
                 await createUserWithEmailAndPassword(auth, email, password);
+                dispatch(setUsername(formData.username));
+                dispatch(setUserEmail(email));
             } catch (err) {
                 console.error(err);
             }
         }
     };
 
-    const handleUser  = async (e) => {
+    const handleUser = async (e) => {
         e.preventDefault();
         if (!isSignedIn) {
             setIsSignedIn(true);
             try {
                 await signInWithEmailAndPassword(auth, email, password);
+                dispatch(setUsername(formData.username));
+                dispatch(setUserEmail(email)); 
             } catch (err) {
                 console.error(err);
             }
         }
     };
+    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

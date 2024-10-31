@@ -10,9 +10,9 @@ export const setMode = (mode) => ({
         type: "SET_IMG",
         payload:img
         })
-        export const setUsername = (user) => ({
+        export const setUsername = (username) => ({
             type: "SET_USER",
-            payload:user
+            payload:username
         })
         export const setUserEmail = (email) => ({
             type: "SET_USER_EMAIL",
