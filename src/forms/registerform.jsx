@@ -80,7 +80,7 @@ const handleusername = (event) => {
             value={email}
             onChange={handleEmail}
         />
-        <label className="absolute left-0 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-gray-900">
+        <label className="absolute left-1 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-gray-900">
             Email
         </label>
     </div>
