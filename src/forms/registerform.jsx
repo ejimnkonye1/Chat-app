@@ -63,10 +63,29 @@ const handleusername = (event) => {
 };
   return (
 <form action="" onSubmit={handleRegister}>
+<div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8 flex items-center">
+    {erromes && <p className='text-nightowl-red'>{erromes}</p>}
+    {success && <p className='text-danger'>Account has been created, You can now login with your details</p>}
+    <span className="icon absolute right-2.5 text-lg text-gray-900 pb-1">
+        <i className='bx bxs-envelope'></i>
+    </span>
+    
+    <input 
+        type="email"
+        name="email"
+        required
+        placeholder=" "
+        className="peer bg-transparent w-full border-none h-full text-sm font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
+        value={email}
+        onChange={handleEmail}
+    />
+    <label className="absolute left-1 top-3 text-gray-500 px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-gray-900">
+        Email
+    </label>
+</div>
+
     <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
-        {erromes && <p className='text-danger'>{erromes}</p>}
-        {success && <p className='text-danger'>Account has been created, You can now login with your details</p>}
-        <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
+    <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
             <i className='bx bxs-user'></i>
         </span>
         
@@ -76,32 +95,12 @@ const handleusername = (event) => {
             name="username"
             required
             placeholder=" "
-            className="peer bg-transparent w-full border-none h-full text-lg font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
+            className="peer bg-transparent w-full border-none h-full text-sm font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
             value={username}
             onChange={handleusername}
         />
-        <label className="absolute left-3 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-blue-500">
+        <label className="absolute left-0 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-gray-900">
             Username
-        </label>
-    </div>
-
-    <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
-        <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
-            <i className='bx bxs-envelope'></i>
-        </span>
-        
-  
-        <input 
-            type="email"
-            name="email"
-            required
-            placeholder=" "
-            className="peer bg-transparent w-full border-none h-full text-lg font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
-            value={email}
-            onChange={handleEmail}
-        />
-        <label className="absolute left-3 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-blue-500">
-            Email
         </label>
     </div>
 
@@ -116,11 +115,11 @@ const handleusername = (event) => {
             name="password"
             required
             placeholder=" "
-            className="peer bg-transparent w-full border-none h-full text-lg font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
+            className="peer bg-transparent w-full border-none h-full text-sm font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
             value={password}
             onChange={handlePassword}
         />
-        <label className="absolute left-3 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-blue-500">
+        <label className="absolute left-0 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-gray-900">
             Password
         </label>
     </div>
@@ -148,3 +147,4 @@ const handleusername = (event) => {
 };
 
 export default RegisterForm;
+

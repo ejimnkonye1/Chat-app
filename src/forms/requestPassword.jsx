@@ -23,7 +23,7 @@ const handleresetpassword = async (e) => {
   }catch (err){
  console.error(err)
  setloading(false)
-setError(err.message)
+ setError(err.message)
 
   }
 };
@@ -34,15 +34,15 @@ setError(err.message)
   setTimeout(() => {
     setsuccess(false)
     setError(false)
-  }, 12000);
+  }, 5000);
   return (
     <div>
-    {erromes && <p className='text-danger'>{erromes}</p>}
+    {erromes && <p className=' bg-red-700 rounded-lg inline-block text-gray-100 px-2 '>{erromes} <br /> Input a registered email</p>}
     {success && <p className='text-danger'>We sent a link to reset your password to your email</p>}
    
 
-    <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
-        <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
+    <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8 flex items-center">
+        <span className="icon absolute right-2.5 text-lg text-gray-900 pb-1 ">
             <i className='bx bxs-envelope'></i>
         </span>
         
@@ -52,11 +52,11 @@ setError(err.message)
             name="email"
             required
             placeholder=" "
-            className="peer bg-transparent w-full border-none h-full text-lg font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
+            className="peer bg-transparent w-full border-none h-full text-sm font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
             value={resetEmail}
             onChange={handlemailChange}
         />
-        <label className="absolute left-3 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-blue-500">
+        <label className="absolute left-0 top-3 text-gray-500  px-1 transition-all duration-200 transform -translate-y-3 scale-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:scale-75 peer-focus:text-gray-900">
             Email
         </label>
     </div>
