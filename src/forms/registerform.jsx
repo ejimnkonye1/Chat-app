@@ -67,7 +67,7 @@ const handleusername = (event) => {
         {erromes && <p className='text-nightowl-red'>{erromes}</p>}
         {success && <p className='text-danger'>Account has been created, You can now login with your details</p>}
         <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
-            <i className='bx bxs-envelope'></i>
+            <i className='bx bxs-envelope pb-2'></i>
         </span>
         
   
