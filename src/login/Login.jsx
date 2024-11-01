@@ -72,18 +72,18 @@ const LoginRegisterForm = () => {
     };
 
     return (
-        <div className='relative min-h-screen flex items-center justify-center bg-cover bg-center'
-            style={{ background: 'black' }}
+        <div className='relative min-h-screen flex items-center justify-center bg-cover bg-center bg-gray-900'
+            // style={{ background: 'black' }}
         >
             <div
                 className={`container relative h-[530px] w-[460px] 
-                border-3 border-white/40 backdrop-blur-[25px] shadow-lg 
+                border-3 border-white/40 mx-8 shadow-lg 
                 flex items-center justify-center rounded-3xl
                 overflow-hidden
-                transition-transform duration-500`}
+                transition-transform duration-1000`}
                 style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
             >
-                <div className={`main-box ${isRegister ? 'register' : 'login'} p-16 w-full`}>
+                <div className={`main-box ${isRegister ? 'register' : 'login'} p-12 w-full`}>
                     <h1 className="text-gray-900 text-center text-4xl font-bold">{isRegister ? 'Registration' : forgetpage ? 'forget' : 'Login'}</h1>
 
                     {isRegister ? (
