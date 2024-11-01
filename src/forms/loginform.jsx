@@ -56,8 +56,8 @@ const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
     <div>
       <form action="" onSubmit={handleUserSignIn}>
         {error && <p className='text-nightowl-red'>{error}</p>}
-        <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8">
-          <span className="icon absolute right-2.5 text-lg text-gray-900 leading-[55px]">
+        <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8 flex items-center">
+          <span className="icon absolute right-2.5 pb-1 text-lg text-gray-900 ">
             <i className='bx bxs-envelope pb-2'></i>
           </span>
           <input 
