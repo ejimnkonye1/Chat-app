@@ -6,7 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { FiArrowLeft } from 'react-icons/fi';
 import { handleBackClick } from './HandleBack'; 
 
-const Userprofile = () => {
+const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [navigateBack, setNavigateBack] = useState(false);
@@ -17,11 +17,17 @@ const Userprofile = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (auth.currentUser) {
+      const loggedInUser = localStorage.getItem('loggedInUser');
+      if (loggedInUser) {
+        setUser(JSON.parse(loggedInUser));
+      } else if (auth.currentUser) {
         const userRef = doc(firestore, 'users', auth.currentUser.uid);
         const userDoc = await getDoc(userRef);
         if (userDoc.exists()) {
-          setUser(userDoc.data());
+          const userData = userDoc.data();
+          setUser(userData);
+          // Save user data to localStorage
+          localStorage.setItem('loggedInUser', JSON.stringify(userData));
         } else {
           console.log('No user document found');
         }
@@ -104,4 +110,4 @@ const Userprofile = () => {
   );
 };
 
-export default Userprofile;
+export default UserProfile;

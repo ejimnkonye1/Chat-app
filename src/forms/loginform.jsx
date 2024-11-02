@@ -21,21 +21,33 @@ const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
   const handleUserSignIn = async (e) => {
     e.preventDefault();
     setloading(true); 
-    try {
-      const userData = await signInWithEmailAndPassword(auth, email, password);
-      const user = userData.user.uid;
-      const userDoc = await getDoc(doc(firestore, 'users', user));
-      if (userDoc.exists) {
-        console.log('User exists');
-        navigate('/chatbox');
-      } else {
-        console.error('User not found', error);
-        setError(error);
-      }
-    } catch (err) {
-      console.error(err);
-      setloading(false);
-      setError(err.message);
+
+    try{
+       
+         const userData =  await signInWithEmailAndPassword(auth, email,password)
+          const user = userData.user.uid
+   const userdoc =      await getDoc(doc(firestore, 'users', user))
+        if (userdoc.exists){
+
+           const userInfo = userdoc.data();
+           localStorage.setItem('loggedInUser', JSON.stringify({
+            uid: user,
+            username: userInfo.username,
+            email: userInfo.email,
+          }));
+    
+          console.log('user exists')
+          navigate('/chatbox');
+        } else{
+          console.error('user not found', error)
+          setError(error)
+        }
+   
+    }catch (err){
+   console.error(err)
+   setloading(false)
+  setError(err.message)
+  
     }
   };
 
