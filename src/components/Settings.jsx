@@ -1,12 +1,20 @@
-
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from 'react-router-dom';
 import { CiDark } from "react-icons/ci";
 import { setMode } from '../action';
 import { CiLight } from "react-icons/ci";
+import { handleBackClick } from './HandleBack';
+import { FiArrowLeft } from 'react-icons/fi';
 const Settings = () => {
-
+  
+  const navigate = useNavigate();
   const dispatch = useDispatch()
   const darkMode = useSelector((state) => state.darkMode)
+
+
+  const [navigateBack, setNavigateBack] = useState(false);
+  
   
   const toggleDarkMode = () => {
      const newMode = !darkMode
@@ -17,6 +25,12 @@ const Settings = () => {
   return (
     <>
       <div className="flex flex-col ">
+      <button
+        className="absolute left-3 top-3 text-3xl"
+        onClick={() => handleBackClick(navigate, navigateBack, setNavigateBack)}
+      >
+        <FiArrowLeft size={24} />
+      </button>
         <h1 className="text-center font-bold text-2xl py-4 dark:text-gray-100 ">Settings</h1>
         <hr/>
         <div className="mt-2 flex justify-between p-4 ">
