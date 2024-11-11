@@ -81,7 +81,7 @@ const LoginRegisterForm = () => {
                 flex items-center justify-center rounded-3xl
                 overflow-hidden
                 transition-transform duration-1000`}
-                style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+                style={{ backgroundColor: 'rgba(255, 255, 255, 20)' }}
             >
                 <div className={`main-box ${isRegister ? 'register' : 'login'} p-12 w-full`}>
                     <h1 className="text-gray-900 text-center text-4xl font-bold">{isRegister ? 'Registration' : forgetpage ? 'forget' : 'Login'}</h1>
