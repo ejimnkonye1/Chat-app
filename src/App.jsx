@@ -19,7 +19,7 @@ const App = () => {
            
         </div>
         <div className="text-2xl py-10 font-bold text-gray-800 animate-bounce">
-        ℂ𝕙𝕒𝕥𝕤𝕒𝕡𝕡
+        ℂ𝕙𝕒𝕥𝕒𝕡𝕡
     </div>
            
     </div>
