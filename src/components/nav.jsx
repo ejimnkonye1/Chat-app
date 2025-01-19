@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
 import { HiOutlinePencilAlt } from 'react-icons/hi';
@@ -9,7 +10,7 @@ import pop from '../audio/pop.mp3'
 import { CircleImage } from './userimg';
 import { IconButton, Tooltip } from "@mui/material";
 import { Typography } from "@mui/material";
-export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserId ,setShowChatArea}) => {
+export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserId ,setShowChatArea,filteredUsers,searchQuery}) => {
     const darkMode = useSelector((state) => state.darkMode)
     const [usersWithMessages, setUsersWithMessages] = useState([]);
     const playpop = useRef(new Audio(pop))
@@ -25,7 +26,7 @@ if (storedchat){
         setUsersWithMessages(prevUsersWithMessages => {
             const updatedUsersWithMessages = [...prevUsersWithMessages];
 
-            onlineUsers.forEach(user => {
+            filteredUsers.forEach(user => {
                 const userMessages = messages.filter(msg =>
                     msg.senderId === user.uid || msg.receiverId === user.uid
                 );
@@ -64,7 +65,7 @@ if (storedchat){
 
             return updatedUsersWithMessages;
         });
-    }, [onlineUsers, messages, currentUserId]);
+    }, [filteredUsers, messages, currentUserId]);
 
     const handleUserClick = async (user) => {
         setSelectedUser (user);
@@ -93,11 +94,15 @@ if (storedchat){
         const time = timestamp.toDate();
         return time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
     };
+    const filteredUsersWithMessages = usersWithMessages.filter((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    
     return (
-        <div className="dark:bg-gray-800 text-gray-900 dark:text-gray-100 max-w-md mx-auto font-sans w-full">
-        <div className='overflow-y-auto h-[410px] scrollbar-hidden '>
-            {usersWithMessages.length > 0 ? (
-                usersWithMessages.map((user) => (
+        <div className=" dark:bg-neutral-900 text-gray-900 dark:text-gray-100 max-w-md mx-auto font-sans w-full">
+        <div className='overflow-y-auto lg:h-[410px] h-[555px] scrollbar-hidden '>
+            {filteredUsersWithMessages.length > 0 ? (
+                filteredUsersWithMessages.map((user) => (
                     <div
                         key={user.uid}
                         onClick={() => handleUserClick(user)}
@@ -106,7 +111,7 @@ if (storedchat){
                         <CircleImage email={user.email} />
                         <div className="ml-4 flex-1"> {/* Added ml-4 for spacing and flex-1 to take the remaining space */}
                             <div>
-                                <p className={`font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                                <p className={`font-bold ${darkMode ? '':''}`}>
                                     {user.username}
                                 </p>
                             </div>
@@ -148,7 +153,7 @@ if (storedchat){
 
 // Head Component
 
-export const Head = ({ onlineUsers, setSelectedUser,setShowChatArea  }) => {
+export const Head = ({ onlineUsers, setSelectedUser,setShowChatArea ,filteredUsers }) => {
     const darkMode = useSelector((state) => state.darkMode)
     const [showChat, setShowChat] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -168,8 +173,8 @@ export const Head = ({ onlineUsers, setSelectedUser,setShowChatArea  }) => {
 
     return (
         <div
-        className={`flex justify-between items-center text-gray-900 dark:text-gray-100 text-2xl py-4 px-4 font-sans ${
-          darkMode ? "bg-gray-800" : ""
+        className={`flex justify-between items-center  dark:bg-neutral-900 text-gray-900 dark:text-neutral-100  text-2xl py-3 px-4 font-sans ${
+          darkMode ? "" : ""
         }`}
       >
         {/* Left side - Title */}
@@ -179,10 +184,10 @@ export const Head = ({ onlineUsers, setSelectedUser,setShowChatArea  }) => {
 
         <div className="relative inline-block text-left">
             {isOpen && (
-                <div className="z-10 absolute   left-0 mt-10 bg-white rounded-lg shadow-lg w-56 max-h-80 overflow-y-auto ring-1 ring-black ring-opacity-5">
+                <div className="z-10 absolute   left-0 mt-10 bg-white rounded-lg shadow-lg w-56 max-h-80 overflow-y-auto ring-1 ring-black ring-opacity-5 scrollbar-hidden">
                     <ul className=" text-sm text-gray-700">
-                        {showChat && onlineUsers.length > 0 ? (
-                            onlineUsers.map((user) => (
+                        {showChat && filteredUsers.length > 0 ? (
+                            filteredUsers.map((user) => (
                                 <li
                                     key={user.uid}
                                     onClick={() => handleUserSelect(user)}

@@ -59,7 +59,7 @@ const App = () => {
     
 
    
-    <div className={`min-h-screen overflow-hidden   bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-700 ${appClass}`}>
+    <div className={`min-h-screen overflow-hidden    dark:bg-neutral-900 text-gray-900 dark:text-neutral-100 transition-colors duration-700 ${appClass}`}>
       
         <Router>
         <Layout>

@@ -3,7 +3,8 @@
 import {  useState } from 'react'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../Firebase'
-import { ErrorAlert } from '../Alert'
+import { ErrorAlert } from '../alert'
+
 
 const RequestPasswordform = ({setfogetPage}) => {
   const [resetEmail , setResetEmail] = useState('')

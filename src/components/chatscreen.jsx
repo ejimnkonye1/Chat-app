@@ -27,7 +27,7 @@ export  const ChatScreen = () => {
 
   const senderId = auth.currentUser?.uid;
   const chatContainerRef = useRef(null);
-
+  const [filteredUsers, setFilteredUsers] = useState([]); 
 
   const fetchUsers = async (auth, setOnlineUsers, firestore) => {
     try {
@@ -36,24 +36,14 @@ export  const ChatScreen = () => {
       const usersnapshot = await getDocs(q);
       const userdata = usersnapshot.docs.map((doc) => ({ uid: doc.id, ...doc.data() }));
       setOnlineUsers(userdata);
+      setFilteredUsers(userdata);
     } catch (error) {
       // setError(error.message);
       console.log(error)
     }
   };
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //       if (chatContainerRef.current) {
-  //           setIsScrolled(chatContainerRef.current.scrollTop > 50);
-  //       }
-  //   };
 
-  //   const chatContainer = chatContainerRef.current;
-  //   chatContainer.addEventListener('scroll', handleScroll);
-    
-  //   return () => chatContainer.removeEventListener('scroll', handleScroll);
-  // }, []);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -124,9 +114,9 @@ export  const ChatScreen = () => {
           read: false,
           status:false
         });
-
-        setMessages([...messages, { content: chatInput, senderId: senderId, receiverId: selectedUser.uid }]);
         setChatInput('');
+        setMessages([...messages, { content: chatInput, senderId: senderId, receiverId: selectedUser.uid, timestamp:Timestamp.now() }]);
+        
         
       } catch (err) {
         console.error('Error sending message', err);
@@ -135,6 +125,16 @@ export  const ChatScreen = () => {
       console.error('No selected user');
     }
   };
+    // Handle search logic
+    const handleSearch = (query) => {
+      setSearchQuery(query);
+      const filtered = onlineUsers.filter((user) =>
+        user.username.toLowerCase().includes(query.toLowerCase()) ||
+        user.email.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredUsers(filtered); // Update filteredUsers state
+    };
+    
   const formatDate = (timestamp) => {
     if (!timestamp) return '';
     const date = timestamp.toDate();
@@ -152,15 +152,16 @@ export  const ChatScreen = () => {
     setShowChatArea(false); 
 };
     return (
-  <div className={`flex h-screen  font-sans ${darkMode ? 'bg-gray-800' : 'bg-gray-300'}`}>
+  <div className={`flex h-screen  font-sans ${darkMode ? '' : ''}`}>
     {/* Left Sidebar */}
     {!showChatArea && (
-      <div className={`  h-screen dark:bg-gray-800 md:w-1/3 bg-white border-r border-gray-300 overflow-hidden ${
+      <div className={`  h-screen  dark:bg-neutral-900 md:w-1/3 bg-white border-r border-gray-300 overflow-hidden ${
         showChatArea ? 'hidden md:block' :'w-full'
     }`}>
       <Searchs 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        handleSearch={handleSearch}
       />
       <Head 
         onlineUsers={onlineUsers}
@@ -169,6 +170,8 @@ export  const ChatScreen = () => {
         currentUserId={senderId}
         showChatArea={showChatArea}
         setShowChatArea={setShowChatArea}
+        filteredUsers={filteredUsers}
+        
         
       />
       <UserChat
@@ -178,6 +181,8 @@ export  const ChatScreen = () => {
         selectedUser={selectedUser}
         currentUserId={senderId}
         setShowChatArea={setShowChatArea}
+        filteredUsers={filteredUsers}
+        searchQuery={searchQuery}
       />
     </div>
   )}
@@ -195,7 +200,7 @@ export  const ChatScreen = () => {
                     >
                         <FiArrowLeft size={24} /> 
                     </button>
-                    <h6 className="text-lg font-sans font-semibold text-gray-500">
+                    <h6 className="text-lg font-sans font-semibold  dark:text-neutral-100">
                         {selectedUser ? selectedUser.username || selectedUser.username : "Select a user to start chatting"}
                     </h6>
                 </div>
@@ -216,7 +221,7 @@ export  const ChatScreen = () => {
         )}
         <li
           className={`message-item mb-2 p-1.5 px-2.5 rounded-lg relative w-fit min-w-[10%] max-w-[60%] flex flex-col break-words ${
-            msg.senderId === senderId ? "sent self-end bg-[#525853] text-white text-right ml-auto" : "received self-start bg-[#f0f0f0] text-black text-left"
+            msg.senderId === senderId ? "sent self-end bg-[#28a745] text-white text-right ml-auto" : "received self-start bg-[#f0f0f0] text-black text-left"
           }`}
         >
           <span>{msg.content}</span>
