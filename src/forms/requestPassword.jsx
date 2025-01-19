@@ -3,6 +3,7 @@
 import {  useState } from 'react'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../Firebase'
+import { ErrorAlert } from '../Alert'
 
 const RequestPasswordform = ({setfogetPage}) => {
   const [resetEmail , setResetEmail] = useState('')
@@ -37,7 +38,15 @@ const handleresetpassword = async (e) => {
   }, 5000);
   return (
     <div>
-    {erromes && <p className=' bg-red-700 rounded-lg inline-block text-gray-100 px-2 '>{erromes} <br /> Input a registered email</p>}
+  {erromes && (
+                         <>
+                                                <ErrorAlert
+                                               open={!!erromes}
+                                               message={erromes}
+                                               onClose={() => setError("")}
+                                             />
+                                       </>
+                       )}
     {success && <p className='text-danger'>We sent a link to reset your password to your email</p>}
    
 

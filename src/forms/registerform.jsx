@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import {updateProfile, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, firestore } from '../Firebase'
 import { doc, setDoc } from 'firebase/firestore';
-
+import { useNavigate } from 'react-router-dom';
+import { ErrorAlert } from '../Alert';
 const RegisterForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +17,7 @@ const RegisterForm = ({ setIsRegister }) => {
   const [username, setUsername] = useState ('')
   const [success, setsuccess] = useState('')
   const [loading, setloading] = useState('');
-
+  const navigate = useNavigate();
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -35,8 +36,9 @@ const RegisterForm = ({ setIsRegister }) => {
       setEmail('')
       setPassword('')
        setUsername('')
+       navigate('/chatbox');
       //  setsuccess(true)
-       setIsRegister(false)
+      //  setIsRegister(false)
       
     } catch(err) {
         console.log(err)
@@ -64,7 +66,15 @@ const handleusername = (event) => {
   return (
 <form action="" onSubmit={handleRegister}>
 <div className="input-box relative h-13 w-full border-b-2 border-gray-900 mt-8 mb-8 flex items-center">
-    {erromes && <p className='text-nightowl-red'>{erromes}</p>}
+      {erromes && (
+                         <>
+                                                <ErrorAlert
+                                               open={!!erromes}
+                                               message={erromes}
+                                               onClose={() => setError("")}
+                                             />
+                                       </>
+                       )}
     {success && <p className='text-danger'>Account has been created, You can now login with your details</p>}
     <span className="icon absolute right-2.5 text-lg text-gray-900 pb-1">
         <i className='bx bxs-envelope'></i>

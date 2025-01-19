@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
     setIsLoading(true);
     const delayLoader = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 5000);
 
     return () => clearTimeout(delayLoader);
   }, []); // Run loader only when the route changes
@@ -27,35 +27,31 @@ const Layout = ({ children }) => {
 };
 const Loader = () => (
   <div id="spinner" className="fixed inset-0 flex items-center justify-center flex-col bg-WHITE z-50">
-     <span className="sr-only">Loading...</span>
+     
       <div className="animate-spin rounded-full border-t-2 border-b-2 border-gray-500 w-12 h-12" >
          
       </div>
-      <div className="text-2xl py-10 font-bold text-gray-800 animate-bounce">
-      ℂ𝕙𝕒𝕥𝕤𝕒𝕡𝕡
+     
+<div className="card">
+  <div className="loader">
+    <p>loading</p>
+    <div className="words">
+      <span className="word">buttons</span>
+      <span className="word">forms</span>
+      <span className="word">switches</span>
+      <span className="word">database</span>
+      <span className="word">buttons</span>
+    </div>
   </div>
-         
+</div>
+
   </div>
     
     
     );
 const App = () => {
-<<<<<<< HEAD
  
 
-=======
-  const Loader = () => (
-    <div id="spinner" className="fixed inset-0 flex items-center justify-center flex-col bg-WHITE z-50">
-       <span className="sr-only">Loading...</span>
-        <div className="animate-spin rounded-full border-t-2 border-b-2 border-gray-500 w-12 h-12" >
-           
-        </div>
-        <div className="text-2xl py-10 font-bold text-gray-800 animate-bounce">
-        ℂ𝕙𝕒𝕥𝕒𝕡𝕡
-    </div>
-           
-    </div>
->>>>>>> fcd05838f7b6646aabb594e343ce83e8638d7334
       
    const darkMode = useSelector((state)=> state.darkMode)
   const appClass = darkMode ? 'dark' : '';
