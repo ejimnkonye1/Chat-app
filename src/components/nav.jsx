@@ -7,7 +7,8 @@ import {  doc,  updateDoc, } from 'firebase/firestore';
 import { firestore } from '../Firebase';
 import pop from '../audio/pop.mp3'
 import { CircleImage } from './userimg';
-
+import { IconButton, Tooltip } from "@mui/material";
+import { Typography } from "@mui/material";
 export const UserChat = ({ onlineUsers, setSelectedUser , messages, currentUserId ,setShowChatArea}) => {
     const darkMode = useSelector((state) => state.darkMode)
     const [usersWithMessages, setUsersWithMessages] = useState([]);
@@ -94,7 +95,7 @@ if (storedchat){
     };
     return (
         <div className="dark:bg-gray-800 text-gray-900 dark:text-gray-100 max-w-md mx-auto font-sans w-full">
-        <div className='overflow-y-auto h-[410px]'>
+        <div className='overflow-y-auto h-[410px] scrollbar-hidden '>
             {usersWithMessages.length > 0 ? (
                 usersWithMessages.map((user) => (
                     <div
@@ -166,8 +167,16 @@ export const Head = ({ onlineUsers, setSelectedUser,setShowChatArea  }) => {
     };
 
     return (
-        <div className={`flex justify-between text-gray-900 dark:text-gray-100  text-2xl py-4 px-4 font-sans ${darkMode ? 'bg-gray-800' : ''}`}>
-        <p className='font-bold '>Chat</p>
+        <div
+        className={`flex justify-between items-center text-gray-900 dark:text-gray-100 text-2xl py-4 px-4 font-sans ${
+          darkMode ? "bg-gray-800" : ""
+        }`}
+      >
+        {/* Left side - Title */}
+        <Typography variant="h6" component="p" fontWeight="bold">
+          Chat
+        </Typography>
+
         <div className="relative inline-block text-left">
             {isOpen && (
                 <div className="z-10 absolute   left-0 mt-10 bg-white rounded-lg shadow-lg w-56 max-h-80 overflow-y-auto ring-1 ring-black ring-opacity-5">
@@ -190,11 +199,17 @@ export const Head = ({ onlineUsers, setSelectedUser,setShowChatArea  }) => {
             )}
         </div>
         <div className="flex justify-end text-gray-800 ml-6">
-            <HiOutlinePencilAlt
-                onClick={toggleDropdown}
-                className="cursor-pointer text-2xl text-gray-900 dark:text-gray-100 hover:text-gray-500 transition-colors"
-            />
-        </div>
+        <Tooltip title="Friends" arrow>
+          <IconButton
+            onClick={toggleDropdown}
+            size="large"
+            className="text-gray-900 dark:text-gray-100 hover:text-gray-500 transition-colors"
+            aria-label="Friends"
+          >
+            <HiOutlinePencilAlt size={24} />
+          </IconButton>
+        </Tooltip>
+      </div>
     </div>
 
     );

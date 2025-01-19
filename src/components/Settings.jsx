@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from 'react-router-dom';
 import { CiDark } from "react-icons/ci";
 import { setMode } from '../action';
 import { CiLight } from "react-icons/ci";
-import { handleBackClick } from './HandleBack';
+
 import { FiArrowLeft } from 'react-icons/fi';
 const Settings = () => {
   
@@ -13,21 +12,33 @@ const Settings = () => {
   const darkMode = useSelector((state) => state.darkMode)
 
 
-  const [navigateBack, setNavigateBack] = useState(false);
-  
-  
-  const toggleDarkMode = () => {
-     const newMode = !darkMode
-     dispatch(setMode(newMode));
 
-     document.documentElement.classList.toggle('dark',newMode)
+  const handleBack = () => {
+    navigate('/chatbox')
+  }
+  
+  // const toggleDarkMode = () => {
+  //    const newMode = !darkMode
+  //    dispatch(setMode(newMode));
+
+  //    document.documentElement.classList.toggle('dark',newMode)
+  // }
+  const toggleDarkMode = () => {
+
+    dispatch(setMode(!darkMode)); // Toggle Redux state
+    if (!darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  
   }
   return (
     <>
       <div className="flex flex-col ">
       <button
         className="absolute left-3 top-3 text-3xl"
-        onClick={() => handleBackClick(navigate, navigateBack, setNavigateBack)}
+        onClick={handleBack}
       >
         <FiArrowLeft size={24} />
       </button>
@@ -35,7 +46,7 @@ const Settings = () => {
         <hr/>
         <div className="mt-2 flex justify-between p-4 ">
           <p className="font-bold text-nightowl-background dark:text-gray-100">Turn on dark mode</p>
-          <div 
+          <button
             onClick={toggleDarkMode}
             className={`relative w-16 h-8 rounded-full cursor-pointer transition-colors duration-300 ${darkMode ? 'bg-nightowl-green' : 'bg-gray-300'} `}
           >
@@ -50,7 +61,7 @@ const Settings = () => {
               }
             </div>
               
-          </div>
+          </button>
         </div>
       </div>
     </>

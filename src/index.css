@@ -12,3 +12,16 @@
 
 
 
+html, body {
+    height: 100%;
+  }
+  /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for Firefox */
+  .scrollbar-hidden {
+    scrollbar-width: none;
+  }
+  

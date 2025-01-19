@@ -10,6 +10,7 @@ import { FiPaperclip } from "react-icons/fi";
 import { FaRegSmile } from "react-icons/fa";
 import { FaPaperPlane } from "react-icons/fa";
 import { FiArrowLeft } from 'react-icons/fi';
+import { TextField, IconButton } from '@mui/material';
 export  const ChatScreen = () => {
   const darkMode = useSelector((state) => state.darkMode)
   
@@ -151,7 +152,7 @@ export  const ChatScreen = () => {
     setShowChatArea(false); 
 };
     return (
-  <div className={`flex h-screen font-sans ${darkMode ? 'bg-gray-800' : 'bg-gray-300'}`}>
+  <div className={`flex h-screen  font-sans ${darkMode ? 'bg-gray-800' : 'bg-gray-300'}`}>
     {/* Left Sidebar */}
     {!showChatArea && (
       <div className={`  h-screen dark:bg-gray-800 md:w-1/3 bg-white border-r border-gray-300 overflow-hidden ${
@@ -182,7 +183,7 @@ export  const ChatScreen = () => {
   )}
     {/* Right Chat Area */}
     {(showChatArea || window.innerWidth >= 768) && (
-    <div  className={`flex-1 flex flex-col h-screen overflow-hidden ${
+    <div  className={`flex-1 flex flex-col h-screen overflow-hidden  ${
       showChatArea ? 'flex' : 'hidden'
   } md:flex`} >
       {/* Chat Header */}
@@ -200,7 +201,7 @@ export  const ChatScreen = () => {
                 </div>
 
       {/* Chat Messages */}
-      <div  className="flex-1 overflow-y-auto p-4">
+      <div  className="flex-1 overflow-y-auto p-4 scrollbar-hidden">
       <ul className="space-y-2 ">
   {messages.map((msg, index) => {
     const messageDate = formatDate(msg.timestamp);
@@ -232,26 +233,41 @@ export  const ChatScreen = () => {
 
       {/* Message Input */}
       <div className="p-3 flex items-center">
-        <input
-          type="text"
-          className="flex-grow border bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-500 rounded-lg px-3 py-1.5 text-sm"
-          placeholder="Type a message..."
-          value={chatInput}
-          onChange={(e) => setChatInput(e.target.value)}
-        />
-        <a className="ml-3 hover:text-gray-700" href="#!">
-          <FiPaperclip />
-        </a>
-        <a className="ml-3 hover:text-gray-700" href="#!">
-          <FaRegSmile />
-        </a>
-        <a
-          className="ml-3 text-blue-500 hover:text-blue-700"
-          onClick={handleSendMessage}
-        >
-          <FaPaperPlane />
-        </a>
-      </div>
+      {/* Material-UI TextField for the input */}
+      <TextField
+        variant="outlined"
+        fullWidth
+        size="small"
+        placeholder="Type a message..."
+        value={chatInput}
+        onChange={(e) => setChatInput(e.target.value)}
+        InputProps={{
+          style: {
+            backgroundColor: 'var(--mui-bg-light)',
+            color: 'var(--mui-text-primary)',
+          },
+        }}
+      />
+
+      {/* Attach File Icon */}
+      <IconButton color="default" className="ml-2">
+        <FiPaperclip />
+      </IconButton>
+
+      {/* Emoji Icon */}
+      <IconButton color="default" className="ml-2">
+        <FaRegSmile />
+      </IconButton>
+
+      {/* Send Message Icon */}
+      <IconButton
+        color="primary"
+        className="ml-2"
+        onClick={handleSendMessage}
+      >
+        <FaPaperPlane />
+      </IconButton>
+    </div>
     </div>
     )}
   

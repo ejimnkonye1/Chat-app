@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 import { auth } from "../Firebase";
-
+import { InputBase, IconButton, Paper } from "@mui/material";
 const LoadingPage = () => (
   <div className="fixed inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 z-50">
     <div className="loader border-t-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
@@ -54,9 +54,7 @@ export const Searchs = () => {
                         <li>
                             <Link to="/settings" className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:text-gray-900">Settings</Link>
                         </li>
-                        <li>
-                            <Link to="/userprofile" className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:text-gray-900">User Profile</Link>
-                        </li>
+                     
                         <li>
                         <div>
                             {isLoading ? (
@@ -64,7 +62,7 @@ export const Searchs = () => {
                             ) : (
                               <p
                                 onClick={handleLogout}
-                                className="block  px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:text-gray-900"
+                                className="block  px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:text-gray-900 cursor-pointer"
                               >
                                 Logout
                               </p>
@@ -74,21 +72,37 @@ export const Searchs = () => {
                 </ul>
             </div>
           )}
-       <div className="flex relative items-center dark:bg-gray-900 dark:text-gray-100 border text-gray-900 border-gray-300 rounded-full text-left shadow-sm w-full max-w-xs mx-auto"> {/* Added w-full and max-w-xs */}
-        <button className="text-xl  px-3" aria-label="Search Icon">
-          <CiSearch />
-        </button>
-        <div className="flex-grow"> {/* Ensure the input takes available space */}
-          <input
-            type="search"
-            className="w-full dark:bg-gray-900 text-gray-900 dark:text-gray-100  p-2 rounded-full focus:outline-none pr-10" // Changed to w-full for responsive input
-            placeholder="Search..."
-            aria-label="Search"
-            
-            onChange={handleInputChange}
-          />
-        </div>
-      </div>
+   <Paper
+      component="form"
+      className="dark:bg-white dark:text-gray-100 mx-auto"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        height:'40px',
+        borderRadius: "15px", 
+        maxWidth: "340px", 
+        width: "90%", 
+        padding: "0.2rem 0.5rem", 
+      }}
+      elevation={2}
+    >
+      {/* Search Icon */}
+      <IconButton type="button" aria-label="search" size="small">
+        <CiSearch size={24} />
+      </IconButton>
+
+      {/* Input Field */}
+      <InputBase
+        placeholder="Search..."
+        inputProps={{ "aria-label": "search" }}
+        onChange={handleInputChange}
+        style={{
+          flex: 1, 
+          padding: "0.3rem 0.5rem",
+
+        }}
+      />
+    </Paper>
           </div>
     
   );
