@@ -8,7 +8,8 @@ import { auth, firestore } from '../Firebase';
 import { useDispatch } from 'react-redux';
 import { setUsername } from '../action';
 import { doc, getDoc } from 'firebase/firestore';
-import { ErrorAlert } from '../Alert';
+import { ErrorAlert } from '../alerts';
+
 
 const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
   const [email, setEmail] = useState('');
@@ -86,7 +87,7 @@ const LoginForm = ({ setIsRegister, forgetpage, setfogetPage }) => {
             name="email"
             required
             placeholder=" "
-            className="peer bg-transparent w-full border-none h-full text-sm font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none w-full"
+            className="peer bg-transparent w-full border-none h-full text-sm font-semibold text-gray-900 px-3 pt-6 pb-2 focus:outline-none"
             value={email}
             onChange={handleEmail}
           />

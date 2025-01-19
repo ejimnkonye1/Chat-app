@@ -5,7 +5,8 @@ import {updateProfile, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, firestore } from '../Firebase'
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { ErrorAlert } from '../Alert';
+import { ErrorAlert } from '../alerts';
+
 const RegisterForm = ({ setIsRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
