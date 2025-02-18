@@ -1,8 +1,17 @@
-# React + Vite
+Chat App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern chat application built with React and Firebase. The app allows users to register, log in, and text other registered users. It supports both light mode and dark mode for a customizable user experience.
 
-Currently, two official plugins are available:
+Features
+	•	User Authentication: Register and log in using Firebase Authentication.
+	•	Texting: Send messages to other registered users in real time.
+	•	Light & Dark Modes: Switch between light and dark themes for personalized visual preferences.
+	•	Firebase Integration: Store and manage user data and messages securely with Firebase.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Technologies Used
+	•	React: For building dynamic UI components.
+	•	Firebase: For user authentication, real-time messaging, and data storage.
+	•	CSS: For styling with light and dark modes.
+
+
+ 
